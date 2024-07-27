@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import LoginCompo from '@/components/LoginCompo.vue';
-import RegisterCompo from '@/components/RegisterCompo.vue';
-import ProfileDetailsCompo from '@/components/ProfileDetailsCompo.vue';
-import FindPasswordCompo from '@/components/FindPasswordCompo.vue';
-import PasswordResetCompo from '@/components/PasswordResetCompo.vue';
+import LoginCompo from '@/components/layout/draw-by-kmj/LoginCompo.vue';
+import RegisterCompo from '@/components/layout/draw-by-kmj/RegisterCompo.vue';
+import ProfileDetailsCompo from '@/components/layout/draw-by-kmj/ProfileDetailsCompo.vue';
+import FindPasswordCompo from '@/components/layout/draw-by-kmj/FindPasswordCompo.vue';
+import PasswordResetCompo from '@/components/layout/draw-by-kmj/PasswordResetCompo.vue';
 
 Vue.use(Router);
 

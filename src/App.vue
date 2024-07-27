@@ -1,15 +1,27 @@
 <template>
-    <div id="app">
-        <router-view></router-view>
-    </div>
+    <v-app>
+        <v-main>
+            <router-view />
+            <!-- <body-compo></body-compo>
+        <footer-compo></footer-compo> -->
+        </v-main>
+    </v-app>
 </template>
 
 <script>
+// import BodyCompo from '@/components/combine/BodyCompo.vue';
+// import FooterCompo from '@/components/layout/atoms/FooterCompo.vue';
+
 export default {
     name: 'App',
+
+    data: () => ({
+        //
+    }),
+
+    // components: {
+    //     BodyCompo,
+    //     FooterCompo,
+    // },
 };
 </script>
-
-<style>
-/* App.vue 스타일을 여기서 정의할 수 있습니다 */
-</style>
