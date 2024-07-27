@@ -178,4 +178,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,intellij,vue,vuejs
+# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudiocode,intellij,vue,vuejs.prettierrc.js
+.idea\
+.prettierrc.js
