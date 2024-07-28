@@ -14,14 +14,16 @@
                 <button class="reset-button" type="submit">인증번호 발송</button>
             </form>
         </div>
-        <confirm-alert-compo />
+        <confirm-alert-compo :showAlert="showAlert" @hideAlert="hideAlert">인증번호가 발송되었습니다.</confirm-alert-compo>
+        <!--
+:showAlert = 부모 -> 자식 Props 를 통한 값 전달
+@hideAlert = 자식 -> 부모 Events 전달
+-->
     </div>
 </template>
 
 <script>
 import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
-
-import { mapActions } from 'vuex';
 
 export default {
     components: {
@@ -30,17 +32,20 @@ export default {
     data() {
         return {
             email: '',
-            showModal: false,
+            showAlert: false,
         };
     },
     methods: {
-        ...mapActions('alert', ['triggerAlert']),
         sendResetCode() {
             // 이메일로 인증번호 발송하는 로직 추가
-            this.triggerAlert();
+            this.showAlert = true;
             setTimeout(() => {
-                this.$router.push({ name: 'password-reset' });
+                //this.$router.push({ name: 'password-reset' });
+                this.showAlert = false;
             }, 2000); // 2초뒤 페이지 이동
+        },
+        hideAlert() {
+            this.showAlert = false;
         },
         goBack() {
             this.$router.go(-1);
@@ -123,33 +128,5 @@ input {
     font-size: 24px;
     font-weight: bold;
     margin-top: 30px;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-content {
-    background-color: #e2f3ff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.modal-content p {
-    font-size: 20px;
-    color: #000;
-    font-weight: bold;
 }
 </style>

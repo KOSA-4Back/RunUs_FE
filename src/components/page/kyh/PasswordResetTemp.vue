@@ -2,45 +2,62 @@
     <div class="container">
         <div class="reset-box">
             <div class="header">
-                <img alt="Back" class="back-arrow" src="@/assets/back-arrow.png" @click="goBack" />
+                <img src="@/assets/back-arrow.png" alt="Back" class="back-arrow" @click="goBack" />
                 <h1>비밀번호 찾기</h1>
             </div>
             <img :src="require('@/assets/runus_logo_skyblue.jpg')" alt="Runus Logo" class="logo" />
-            <form @submit.prevent="sendResetCode">
+            <form @submit.prevent="resetPassword">
                 <div class="input-box">
                     <label for="email">가입한 이메일</label>
-                    <input id="email" v-model="email" type="email" />
+                    <input type="email" id="email" v-model="email" />
                 </div>
-                <button class="reset-button" type="submit">인증번호 발송</button>
+                <div class="input-box">
+                    <label for="code">인증 번호</label>
+                    <div class="input-with-button">
+                        <input type="text" class="verify-input" v-model="code" />
+                        <button type="button" class="verify-button">인증</button>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <label for="new-password">비밀번호 변경</label>
+                    <input type="password" id="new-password" v-model="newPassword" />
+                </div>
+                <div class="input-box">
+                    <label for="confirm-password">비밀번호 확인</label>
+                    <input type="password" id="confirm-password" v-model="confirmPassword" />
+                </div>
+                <button type="submit" class="reset-button">비밀번호 변경</button>
             </form>
         </div>
-        <confirm-alert-compo />
+        <confirm-alert-compo :showAlert="showAlert" @hideAlert="hideAlert">비밀번호가 변경되었습니다.</confirm-alert-compo>
     </div>
 </template>
 
 <script>
 import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
 
-import { mapActions } from 'vuex';
-
 export default {
-    components: {
-        ConfirmAlertCompo,
-    },
+    components: { ConfirmAlertCompo },
     data() {
         return {
             email: '',
-            showModal: false,
+            code: '',
+            newPassword: '',
+            confirmPassword: '',
+            showAlert: false,
         };
     },
     methods: {
-        ...mapActions('alert', ['triggerAlert']),
-        sendResetCode() {
-            // 이메일로 인증번호 발송하는 로직 추가
-            this.triggerAlert();
+        resetPassword() {
+            // 비밀번호 변경 로직
+            this.showAlert = true;
             setTimeout(() => {
-                this.$router.push({ name: 'password-reset' });
-            }, 2000); // 2초뒤 페이지 이동
+                //this.$router.push({ name: 'login' });
+                this.showAlert = false;
+            }, 2000);
+        },
+        hideAlert() {
+            this.showAlert = false;
         },
         goBack() {
             this.$router.go(-1);
@@ -83,7 +100,7 @@ export default {
 
 .logo {
     width: 300px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 h1 {
@@ -104,12 +121,38 @@ label {
     font-size: 16px;
 }
 
+.input-with-button {
+    display: flex;
+    align-items: center;
+}
+
 input {
     width: 95%;
     padding: 10px;
     font-size: 14px;
-    border: 1px solid #ccc;
+    border: none;
     border-radius: 10px;
+}
+
+.verify-input {
+    width: calc(100% - 100px); /* Adjust width to fit button beside */
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 10px;
+}
+
+.verify-button {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #3897db;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100px; /* Adjust width of the button */
 }
 
 .reset-button {
