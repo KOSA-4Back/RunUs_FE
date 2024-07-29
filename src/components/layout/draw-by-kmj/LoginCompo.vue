@@ -1,3 +1,4 @@
+// src/components/layout/draw-by-kmj/LoginCompo.vue
 <template>
     <div class="container">
         <div class="login-box">
@@ -5,7 +6,7 @@
             <h1>로그인</h1>
             <v-form>
                 <v-text-field v-model="email" label="이메일" solo class="rounded-xl" prepend-icon="mdi-email"></v-text-field>
-                <v-text-field class="rounded-xl" v-model="password" label="비밀번호" solo prepend-icon="mdi-lock"></v-text-field>
+                <v-text-field class="rounded-xl" v-model="password" label="비밀번호" solo prepend-icon="mdi-lock" type="password"></v-text-field>
                 <LoginButton buttonClass="button" @click.prevent="login">로그인</LoginButton>
             </v-form>
             <div class="links">
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import axios from '../../api/axios';
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import PasswordButton from '@/components/layout/atoms/item/button/PasswordButton.vue';
 
@@ -32,8 +34,20 @@ export default {
         };
     },
     methods: {
-        login() {
-            // 로그인 로직
+        async login() {
+            try {
+                const response = await axios.post('/auth/login', {
+                    email: this.email,
+                    password: this.password,
+                });
+                const token = response.data.Token;
+                localStorage.setItem('token', token);
+                alert('로그인 성공!');
+                // 로그인 성공 후 다른 페이지로 이동
+                this.$router.push({ name: 'test' });
+            } catch (error) {
+                alert('로그인 실패! 이메일과 비밀번호를 확인하세요.');
+            }
         },
         goToRegister() {
             this.$router.push({ name: 'register' });

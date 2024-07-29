@@ -26,16 +26,12 @@
                 </div>
             </form>
         </div>
-        <div v-if="showModal" class="modal-overlay">
-            <div class="modal-content">
-                <img src="@/assets/check-mark.png" alt="Check Mark" class="check-mark" />
-                <p>회원가입 완료!</p>
-            </div>
-        </div>
+        <SignupCompleteCompo v-if="showModal" />
     </div>
 </template>
 
 <script>
+import axios from '../../api/axios'; // 상대 경로로 수정
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
 import DatePickerInputItem from '@/components/layout/atoms/item/input/DatePickerInputItem.vue';
@@ -43,6 +39,7 @@ import InputItem from '@/components/layout/atoms/item/input/InputItem.vue';
 import InputItem2 from '@/components/layout/atoms/item/input/InputItem.vue';
 import LabelItem from '../atoms/item/label/LabelItem.vue';
 import CardItem from '../atoms/item/card/CardItem.vue';
+import SignupCompleteCompo from '@/components/combine/SignupCompleteCompo.vue';
 
 export default {
     components: {
@@ -53,6 +50,7 @@ export default {
         CardItem,
         LoginButton,
         BackButton,
+        SignupCompleteCompo,
     },
     data() {
         return {
@@ -63,16 +61,28 @@ export default {
         };
     },
     methods: {
+        async register() {
+            try {
+                const response = await axios.post('/auth/register', {
+                    birth: this.birth,
+                    height: this.height,
+                    weight: this.weight,
+                });
+                if (response.status === 200) {
+                    this.showModal = true;
+                    setTimeout(() => {
+                        this.showModal = false;
+                        this.$router.push({ name: 'test' });
+                    }, 2000);
+                } else {
+                    alert('회원가입 실패. 다시 시도해주세요.');
+                }
+            } catch (error) {
+                alert('에러가 발생했습니다: ' + error.message);
+            }
+        },
         goBack() {
             this.$router.go(-1);
-        },
-        register() {
-            // 회원가입 로직을 여기에 추가합니다.
-            this.showModal = true;
-            setTimeout(() => {
-                this.showModal = false;
-                this.$router.push({ name: 'test' }); // test.vue로 라우팅
-            }, 2000); // 2초 후에 모달을 닫고 페이지 이동
         },
     },
 };
@@ -84,6 +94,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    position: relative; /* 부모 요소에 상대적 위치 설정 */
     background-color: #fff;
 }
 .details-box {
@@ -115,38 +126,5 @@ input {
     font-size: 14px;
     border: none;
     border-radius: 10px;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.modal-content {
-    background-color: #e2f3ff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 200px;
-    height: 250px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.modal-content img.check-mark {
-    width: 100px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-.modal-content p {
-    margin-top: 50px;
-    font-size: 24px;
-    color: #000000;
-    font-weight: bold;
 }
 </style>

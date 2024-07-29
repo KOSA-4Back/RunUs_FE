@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-main>
-            <!--<router-view />-->
+            <router-view />
             <!-- <body-compo></body-compo>
         <footer-compo></footer-compo> -->
             <kang-heewon></kang-heewon>

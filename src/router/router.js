@@ -5,7 +5,7 @@ import RegisterCompo from '@/components/layout/draw-by-kmj/RegisterCompo.vue';
 import ProfileDetailsCompo from '@/components/layout/draw-by-kmj/ProfileDetailsCompo.vue';
 import FindPasswordCompo from '@/components/layout/draw-by-kmj/FindPasswordCompo.vue';
 import PasswordResetCompo from '@/components/layout/draw-by-kmj/PasswordResetCompo.vue';
-import Test from '@/components/layout/draw-by-kmj/test-test.vue';
+import Test from '@/components/layout/draw-by-kmj/test-test.vue'; //test임 나중에 지우기
 
 Vue.use(Router);
 
@@ -38,6 +38,7 @@ export default new Router({
             component: PasswordResetCompo,
         },
 
+        //test임 나중에 지우기
         {
             path: '/test', // test.vue 경로 추가
             name: 'test',
