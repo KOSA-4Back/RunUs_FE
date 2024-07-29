@@ -7,18 +7,23 @@
             </div>
             <form @submit.prevent="register">
                 <div class="input-box">
-                    <label for="birthdate" style="margin-top: 50px">생년월일*</label>
-                    <input type="date" id="birthdate" v-model="birthdate" />
+                    <label-item name="생년월일" :required="true"></label-item>
+                    <date-picker-input-item label="생년-월-일" v-model="birth"></date-picker-input-item>
                 </div>
                 <div class="input-box">
-                    <label for="height">키* (cm)</label>
-                    <input type="number" id="height" v-model="height" />
+                    <label-item name="키 (cm)" :required="true"></label-item>
+                    <input-item label="키 (cm)" v-model="height" prependIcon="mdi-human-male-height" inputType="Number"></input-item>
                 </div>
                 <div class="input-box">
-                    <label for="weight">몸무게* (kg)</label>
-                    <input type="number" id="weight" v-model="weight" />
+                    <label-item name="몸무게 (kg)" :required="true"></label-item>
+                    <input-item2 label="몸무게 (kg)" v-model="weight" prependIcon="mdi-scale" inputType="Number"></input-item2>
                 </div>
                 <LoginButton buttonClass="button" @click.prevent="register">회원가입</LoginButton>
+                <br />
+                <br />
+                <div>
+                    <card-item viewFlag="active"></card-item>
+                </div>
             </form>
         </div>
         <div v-if="showModal" class="modal-overlay">
@@ -33,15 +38,25 @@
 <script>
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
+import DatePickerInputItem from '@/components/layout/atoms/item/input/DatePickerInputItem.vue';
+import InputItem from '@/components/layout/atoms/item/input/InputItem.vue';
+import InputItem2 from '@/components/layout/atoms/item/input/InputItem.vue';
+import LabelItem from '../atoms/item/label/LabelItem.vue';
+import CardItem from '../atoms/item/card/CardItem.vue';
 
 export default {
     components: {
+        DatePickerInputItem,
+        InputItem,
+        InputItem2,
+        LabelItem,
+        CardItem,
         LoginButton,
         BackButton,
     },
     data() {
         return {
-            birthdate: '',
+            birth: '',
             height: '',
             weight: '',
             showModal: false,
@@ -92,13 +107,7 @@ export default {
     margin-right: 45px;
 }
 .input-box {
-    margin-bottom: 20px;
-}
-label {
-    display: block;
-    text-align: left;
-    margin-bottom: 5px;
-    font-size: 16px;
+    margin-bottom: 10px;
 }
 input {
     width: 95%;
