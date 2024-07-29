@@ -1,11 +1,9 @@
 <template>
-    <div>
-        <v-btn :class="['rounded-pill', 'sizeTest']" :color="color" :elevation="elevation" :style="buttonStyle" @click="clickHandler">
-            <slot>
-                <p>{{ defaultText }}</p>
-            </slot>
-        </v-btn>
-    </div>
+    <v-btn :class="['rounded-pill', 'sizeTest']" :color="color" :elevation="elevation" :style="buttonStyle" @click="$emit('click')">
+        <slot>
+            <p>{{ defaultText }}</p>
+        </slot>
+    </v-btn>
 </template>
 
 <script>
@@ -35,10 +33,6 @@ export default {
             type: String,
             default: '', // 기본값은 없음
         },
-        clickHandler: {
-            type: Function,
-            required: true,
-        },
     },
     computed: {
         buttonStyle() {
@@ -59,7 +53,4 @@ export default {
     padding: 0 !important;
     position: relative;
 }
-</style>
-<style lang="scss" scoped>
-@import '@/scss/variables';
 </style>
