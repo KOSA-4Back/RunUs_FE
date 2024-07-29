@@ -6,18 +6,25 @@
             <v-form>
                 <v-text-field v-model="email" label="이메일" solo class="rounded-xl" prepend-icon="mdi-email"></v-text-field>
                 <v-text-field class="rounded-xl" v-model="password" label="비밀번호" solo prepend-icon="mdi-lock"></v-text-field>
-                <v-btn class="login-button" block @click.prevent="login">로그인</v-btn>
+                <LoginButton buttonClass="button" @click.prevent="login">로그인</LoginButton>
             </v-form>
             <div class="links">
-                <v-btn text @click.prevent="goToFindPassword">비밀번호 찾기</v-btn>
-                <v-btn text @click.prevent="goToRegister">회원가입</v-btn>
+                <PasswordButton buttonClass="password-button" @click.prevent="goToFindPassword">비밀번호 찾기</PasswordButton>
+                <PasswordButton buttonClass="password-button" @click.prevent="goToRegister">회원가입</PasswordButton>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
+import PasswordButton from '@/components/layout/atoms/item/button/PasswordButton.vue';
+
 export default {
+    components: {
+        LoginButton,
+        PasswordButton,
+    },
     data() {
         return {
             email: '',
@@ -25,6 +32,9 @@ export default {
         };
     },
     methods: {
+        login() {
+            // 로그인 로직
+        },
         goToRegister() {
             this.$router.push({ name: 'register' });
         },
@@ -73,19 +83,6 @@ label {
     text-align: left;
     margin-bottom: 5px;
     font-size: 16px;
-}
-
-::v-deep .login-button {
-    height: 45px !important;
-    padding: 10px !important;
-    background-color: #fff !important;
-    color: #3897db !important;
-    border: none !important;
-    border-radius: 3px !important;
-    cursor: pointer !important;
-    font-size: 24px !important;
-    font-weight: bold !important;
-    margin-top: 10px !important;
 }
 
 .links {

@@ -2,7 +2,7 @@
     <div class="container">
         <div class="details-box">
             <div class="header">
-                <img src="@/assets/back-arrow.png" alt="Back" class="back-arrow" @click="goBack" />
+                <BackButton />
                 <h1>회원가입</h1>
             </div>
             <form @submit.prevent="register">
@@ -18,7 +18,7 @@
                     <label-item name="몸무게 (kg)" :required="true"></label-item>
                     <input-item2 label="몸무게 (kg)" v-model="weight" prependIcon="mdi-scale" inputType="Number"></input-item2>
                 </div>
-                <button type="submit" class="register-button">회원가입</button>
+                <LoginButton buttonClass="button" @click.prevent="register">회원가입</LoginButton>
                 <br />
                 <br />
                 <div>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
+import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
 import DatePickerInputItem from '@/components/layout/atoms/item/input/DatePickerInputItem.vue';
 import InputItem from '@/components/layout/atoms/item/input/InputItem.vue';
 import InputItem2 from '@/components/layout/atoms/item/input/InputItem.vue';
@@ -43,7 +45,15 @@ import LabelItem from '../atoms/item/label/LabelItem.vue';
 import CardItem from '../atoms/item/card/CardItem.vue';
 
 export default {
-    components: { DatePickerInputItem, InputItem, InputItem2, LabelItem, CardItem },
+    components: {
+        DatePickerInputItem,
+        InputItem,
+        InputItem2,
+        LabelItem,
+        CardItem,
+        LoginButton,
+        BackButton,
+    },
     data() {
         return {
             birth: '',
@@ -61,7 +71,7 @@ export default {
             this.showModal = true;
             setTimeout(() => {
                 this.showModal = false;
-                this.$router.push({ name: 'next-page' }); // 다음 페이지로 라우팅
+                this.$router.push({ name: 'test' }); // test.vue로 라우팅
             }, 2000); // 2초 후에 모달을 닫고 페이지 이동
         },
     },
@@ -77,8 +87,8 @@ export default {
     background-color: #fff;
 }
 .details-box {
-    width: 400px; /* Galaxy S20 Ultra 비율에 맞춘 너비 */
-    height: 800px; /* Galaxy S20 Ultra 비율에 맞춘 높이 */
+    width: 400px;
+    height: 800px;
     padding: 20px;
     background-color: #e2f3ff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -88,17 +98,13 @@ export default {
 .header {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
 }
-.back-arrow {
-    width: 50px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-h1 {
+.header h1 {
     flex: 1;
     font-size: 32px;
-    margin-bottom: 30px;
-    margin-right: 60px;
+    margin-right: 45px;
 }
 .input-box {
     margin-bottom: 10px;
@@ -109,18 +115,6 @@ input {
     font-size: 14px;
     border: none;
     border-radius: 10px;
-}
-.register-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    color: #3897db;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 50px;
 }
 
 .modal-overlay {
@@ -135,7 +129,6 @@ input {
     align-items: center;
     z-index: 1000;
 }
-
 .modal-content {
     background-color: #e2f3ff;
     padding: 20px;
@@ -145,13 +138,11 @@ input {
     height: 250px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .modal-content img.check-mark {
     width: 100px;
     margin-top: 20px;
     margin-bottom: 10px;
 }
-
 .modal-content p {
     margin-top: 50px;
     font-size: 24px;
