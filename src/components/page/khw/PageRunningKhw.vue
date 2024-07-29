@@ -12,7 +12,7 @@
 
 <script>
 import RoundButton from '../../layout/atoms/item/button/RoundButtonItem.vue';
-import KakaoMapItem from '../../layout/atoms/item/map/KakaoMapItem.vue';
+import KakaoMapItem from '../../layout/atoms/item/map/kakaoMapItem.vue';
 import SetDestinationModalCompo from '@/components/combine/SetDestinationModalCompo.vue';
 
 export default {
