@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-btn :class="['rounded-pill', 'sizeTest']" :color="color" :elevation="elevation" :style="buttonStyle">
+        <v-btn :class="['rounded-pill', 'sizeTest']" :color="color" :elevation="elevation" :style="buttonStyle" @click="clickHandler">
             <slot>
                 <p>{{ defaultText }}</p>
             </slot>
@@ -34,6 +34,10 @@ export default {
         borderColor: {
             type: String,
             default: '', // 기본값은 없음
+        },
+        clickHandler: {
+            type: Function,
+            required: true,
         },
     },
     computed: {
