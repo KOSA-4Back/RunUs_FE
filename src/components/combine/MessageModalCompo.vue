@@ -2,7 +2,7 @@
     <v-container fluid class="fill-height d-flex align-center justify-center pa-0">
         <v-row justify="center" align="center" class="fill-height">
             <v-col cols="auto">
-                <v-card class="rounded-xxl pa-3" rounded="lg" width="230" height="110px" outlined color="#3897DB">
+                <v-card class="rounded-xxl pa-3" rounded="lg" width="300" height="110px" outlined color="#3897DB">
                     <v-row no-gutters>
                         <v-col cols="auto" class="position-relative avatar-col">
                             <avatar :src="avatarSrc" alt="User Avatar" />
@@ -12,7 +12,7 @@
                             <user-info :senderId="senderId" :messageContent="messageContent" />
                         </v-col>
                     </v-row>
-                    <badge :content="title" class="badge-container"></badge>
+                    <badge class="badge-container"></badge>
                 </v-card>
             </v-col>
         </v-row>
@@ -59,7 +59,7 @@ export default {
 }
 
 .avatar-col {
-    margin-right: 16px;
+    margin-right: 50px;
 }
 
 .white-text {
