@@ -2,7 +2,7 @@
     <div class="container">
         <div class="reset-box">
             <div class="header">
-                <img src="@/assets/back-arrow.png" alt="Back" class="back-arrow" @click="goBack" />
+                <BackButton />
                 <h1>비밀번호 찾기</h1>
             </div>
             <img :src="require('@/assets/runus_logo_skyblue.jpg')" alt="Runus Logo" class="logo" />
@@ -15,7 +15,7 @@
                     <label for="code">인증 번호</label>
                     <div class="input-with-button">
                         <input type="text" class="verify-input" v-model="code" />
-                        <button type="button" class="verify-button">인증</button>
+                        <LoginButton buttonClass="verify-button" @click.prevent="verifyCode">인증</LoginButton>
                     </div>
                 </div>
                 <div class="input-box">
@@ -26,7 +26,7 @@
                     <label for="confirm-password">비밀번호 확인</label>
                     <input type="password" id="confirm-password" v-model="confirmPassword" />
                 </div>
-                <button type="submit" class="reset-button">비밀번호 변경</button>
+                <LoginButton buttonClass="reset-button" @click.prevent="resetPassword">비밀번호 변경</LoginButton>
             </form>
         </div>
         <div v-if="showModal" class="modal-overlay">
@@ -38,7 +38,14 @@
 </template>
 
 <script>
+import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
+import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
+
 export default {
+    components: {
+        LoginButton,
+        BackButton,
+    },
     data() {
         return {
             email: '',
@@ -49,9 +56,6 @@ export default {
         };
     },
     methods: {
-        goBack() {
-            this.$router.go(-1);
-        },
         resetPassword() {
             // 비밀번호 변경 로직을 여기에 추가합니다.
             this.showModal = true;
@@ -59,6 +63,9 @@ export default {
                 this.showModal = false;
                 this.$router.push({ name: 'login' }); // 로그인 페이지로 라우팅
             }, 2000); // 2초 후에 모달을 닫고 페이지 이동
+        },
+        verifyCode() {
+            // 인증 번호 확인 로직 추가
         },
     },
 };
@@ -73,8 +80,8 @@ export default {
     background-color: #fff;
 }
 .reset-box {
-    width: 412px; /* Galaxy S20 Ultra 비율에 맞춘 너비 */
-    height: 915px; /* Galaxy S20 Ultra 비율에 맞춘 높이 */
+    width: 400px;
+    height: 800px;
     padding: 20px;
     background-color: #e2f3ff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -84,23 +91,17 @@ export default {
 .header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
+    justify-content: flex-start;
+    margin-bottom: 30px;
 }
-.back-arrow {
-    width: 50px;
-    margin-right: 10px;
-    cursor: pointer;
+.header h1 {
+    flex: 1;
+    font-size: 32px;
+    margin-right: 30px;
 }
 .logo {
     width: 300px;
     margin-bottom: 20px;
-}
-h1 {
-    flex: 1;
-    font-size: 32px;
-    margin-bottom: 30px;
-    margin-right: 60px;
 }
 .input-box {
     margin-bottom: 20px;
@@ -153,7 +154,6 @@ input {
     font-weight: bold;
     margin-top: 30px;
 }
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -166,7 +166,6 @@ input {
     align-items: center;
     z-index: 1000;
 }
-
 .modal-content {
     background-color: #e2f3ff;
     padding: 20px;
@@ -175,7 +174,6 @@ input {
     width: 300px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .modal-content p {
     font-size: 20px;
     color: #000;
