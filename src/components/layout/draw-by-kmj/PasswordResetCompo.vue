@@ -6,45 +6,40 @@
                 <h1>비밀번호 찾기</h1>
             </div>
             <img :src="require('@/assets/runus_logo_skyblue.jpg')" alt="Runus Logo" class="logo" />
-            <form @submit.prevent="resetPassword">
+            <form @submit.prevent="sendResetCode">
                 <div class="input-box">
-                    <label for="email">가입한 이메일</label>
-                    <input type="email" id="email" v-model="email" />
+                    <CustomTextField v-model="email" label="가입한 이메일" inputType="email" prependIcon="mdi-email" />
+                </div>
+                <div class="input-box input-with-button">
+                    <CustomTextField v-model="code" label="인증 번호" inputType="text" prependIcon="mdi-numeric" class="verify-input" />
+                    <LoginButton buttonClass="verify-button" @click.prevent="verifyCode">인증</LoginButton>
                 </div>
                 <div class="input-box">
-                    <label for="code">인증 번호</label>
-                    <div class="input-with-button">
-                        <input type="text" class="verify-input" v-model="code" />
-                        <LoginButton buttonClass="verify-button" @click.prevent="verifyCode">인증</LoginButton>
-                    </div>
+                    <CustomTextField v-model="newPassword" label="비밀번호 변경" inputType="password" prependIcon="mdi-lock" />
                 </div>
                 <div class="input-box">
-                    <label for="new-password">비밀번호 변경</label>
-                    <input type="password" id="new-password" v-model="newPassword" />
+                    <CustomTextField v-model="confirmPassword" label="비밀번호 확인" inputType="password" prependIcon="mdi-lock-check" />
                 </div>
-                <div class="input-box">
-                    <label for="confirm-password">비밀번호 확인</label>
-                    <input type="password" id="confirm-password" v-model="confirmPassword" />
-                </div>
-                <LoginButton buttonClass="reset-button" @click.prevent="resetPassword">비밀번호 변경</LoginButton>
+                <LoginButton buttonClass="button" @click.prevent="resetPassword">비밀번호 변경</LoginButton>
             </form>
         </div>
-        <div v-if="showModal" class="modal-overlay">
-            <div class="modal-content">
-                <p>비밀번호가 변경되었습니다.</p>
-            </div>
-        </div>
+        <confirm-alert-compo :showAlert="showAlert" @hideAlert="hideAlert">비밀번호가 변경되었습니다.</confirm-alert-compo>
     </div>
 </template>
 
 <script>
+import axios from '../../api/axios'; // 상대 경로로 수정
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
+import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
+import CustomTextField from '@/components/layout/atoms/item/input/InputItem.vue';
 
 export default {
     components: {
         LoginButton,
         BackButton,
+        ConfirmAlertCompo,
+        CustomTextField,
     },
     data() {
         return {
@@ -52,20 +47,59 @@ export default {
             code: '',
             newPassword: '',
             confirmPassword: '',
-            showModal: false,
+            showAlert: false,
         };
     },
     methods: {
-        resetPassword() {
-            // 비밀번호 변경 로직을 여기에 추가합니다.
-            this.showModal = true;
-            setTimeout(() => {
-                this.showModal = false;
-                this.$router.push({ name: 'login' }); // 로그인 페이지로 라우팅
-            }, 2000); // 2초 후에 모달을 닫고 페이지 이동
+        async sendResetCode() {
+            try {
+                const response = await axios.post('/api/auth/forgot-password', { email: this.email });
+                if (response.status === 200) {
+                    alert('인증번호가 발송되었습니다.');
+                } else {
+                    alert('인증번호 발송에 실패했습니다.');
+                }
+            } catch (error) {
+                alert('에러가 발생했습니다: ' + error.response.data);
+            }
         },
-        verifyCode() {
-            // 인증 번호 확인 로직 추가
+        async verifyCode() {
+            try {
+                const response = await axios.post('/api/auth/verify-code', { email: this.email, code: this.code });
+                if (response.status === 200) {
+                    alert('인증이 완료되었습니다.');
+                } else {
+                    alert('인증에 실패했습니다.');
+                }
+            } catch (error) {
+                alert('에러가 발생했습니다: ' + error.response.data);
+            }
+        },
+        async resetPassword() {
+            if (this.newPassword !== this.confirmPassword) {
+                alert('비밀번호가 일치하지 않습니다.');
+                return;
+            }
+            try {
+                const response = await axios.put('/api/auth/change-password', { email: this.email, changePassword: this.newPassword });
+                if (response.status === 200) {
+                    this.showAlert = true;
+                    setTimeout(() => {
+                        this.showAlert = false;
+                        this.$router.push({ name: 'login' });
+                    }, 2000);
+                } else {
+                    alert('비밀번호 변경에 실패했습니다.');
+                }
+            } catch (error) {
+                alert('에러가 발생했습니다: ' + error.response.data);
+            }
+        },
+        hideAlert() {
+            this.showAlert = false;
+        },
+        goBack() {
+            this.$router.go(-1);
         },
     },
 };
@@ -104,7 +138,13 @@ export default {
     margin-bottom: 20px;
 }
 .input-box {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+.input-with-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 label {
     display: block;
@@ -112,26 +152,12 @@ label {
     margin-bottom: 5px;
     font-size: 16px;
 }
-.input-with-button {
-    display: flex;
-    align-items: center;
-}
-input {
-    width: 95%;
-    padding: 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 10px;
-}
 .verify-input {
-    width: calc(100% - 100px); /* Adjust width to fit button beside */
-    padding: 10px;
-    font-size: 14px;
-    border: none;
-    border-radius: 10px;
+    flex: 1;
 }
 .verify-button {
     margin-left: 10px;
+    margin-bottom: 30px;
     padding: 10px;
     background-color: #ffffff;
     color: #3897db;
@@ -141,42 +167,5 @@ input {
     font-size: 16px;
     font-weight: bold;
     width: 100px; /* Adjust width of the button */
-}
-.reset-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #fff;
-    color: #3897db;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 30px;
-}
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-.modal-content {
-    background-color: #e2f3ff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-.modal-content p {
-    font-size: 20px;
-    color: #000;
-    font-weight: bold;
 }
 </style>
