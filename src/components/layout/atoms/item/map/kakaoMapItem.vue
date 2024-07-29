@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <div id="map"></div>
-    </div>
+    <div id="map"></div>
 </template>
 
 <script>
@@ -10,15 +8,23 @@ export default {
     props: {
         latitude: {
             type: Number,
-            required: true,
+            default: 37.5665,
         },
         longitude: {
             type: Number,
-            required: true,
+            default: 126.978,
+        },
+        targetDistance: {
+            type: [Number, String],
+            default: null,
         },
         polylinePath: {
             type: Array,
             default: () => [],
+        },
+        isTracking: {
+            type: Boolean,
+            default: false,
         },
     },
     data() {
@@ -26,21 +32,49 @@ export default {
             map: null,
             marker: null,
             polyline: null,
+            path: [], // 폴리라인 경로를 저장할 배열
+            totalDistance: 0,
+            polylineDrawing: false,
             scriptLoaded: false,
+            timer: null,
+            startTime: null,
+            elapsedTime: 0,
+            currentLatitude: this.latitude,
+            currentLongitude: this.longitude,
+            internalTargetDistance: Number(this.targetDistance),
+            watchId: null,
         };
     },
     watch: {
-        latitude() {
-            this.updateMarker();
-        },
-        longitude() {
-            this.updateMarker();
+        targetDistance(newDistance) {
+            this.internalTargetDistance = Number(newDistance);
+            if (this.internalTargetDistance !== null) {
+                this.startPolylineDrawing();
+            }
         },
         polylinePath(newPath) {
-            if (this.polyline) {
-                this.polyline.setPath(newPath);
+            this.path = newPath.map((coord) => new window.kakao.maps.LatLng(coord.lat, coord.lng));
+            if (this.map && this.polyline) {
+                this.updatePolyline();
+            }
+        },
+        latitude(newLat) {
+            this.currentLatitude = newLat;
+            if (this.map) {
+                this.updateMarker();
+            }
+        },
+        longitude(newLng) {
+            this.currentLongitude = newLng;
+            if (this.map) {
+                this.updateMarker();
+            }
+        },
+        isTracking(newTracking) {
+            if (newTracking) {
+                this.startPolylineDrawing();
             } else {
-                this.initializePolyline(newPath);
+                this.stopPolylineDrawing();
             }
         },
     },
@@ -66,19 +100,23 @@ export default {
             document.head.appendChild(script);
         },
         initializeMap() {
-            const container = this.$el.querySelector('#map');
+            if (!window.kakao || !window.kakao.maps) {
+                console.error('Kakao Maps SDK가 올바르게 로드되지 않았습니다.');
+                return;
+            }
+
+            const container = document.getElementById('map');
             const options = {
-                center: new window.kakao.maps.LatLng(this.latitude, this.longitude),
+                center: new window.kakao.maps.LatLng(this.currentLatitude, this.currentLongitude),
                 level: 3,
             };
+
             this.map = new window.kakao.maps.Map(container, options);
             this.updateMarker();
-            if (this.polylinePath.length > 0) {
-                this.initializePolyline(this.polylinePath);
-            }
+            this.initializeLocation();
         },
         updateMarker() {
-            const position = new window.kakao.maps.LatLng(this.latitude, this.longitude);
+            const position = new window.kakao.maps.LatLng(this.currentLatitude, this.currentLongitude);
             if (this.marker) {
                 this.marker.setMap(null);
             }
@@ -88,23 +126,123 @@ export default {
             });
             this.map.setCenter(position);
         },
-        initializePolyline(path) {
-            this.polyline = new window.kakao.maps.Polyline({
-                path: path,
-                strokeWeight: 4,
-                strokeColor: '#0d6efd',
-                strokeOpacity: 0.8,
-                strokeStyle: 'dashed',
-            });
-            this.polyline.setMap(this.map);
+        initializeLocation() {
+            if ('geolocation' in navigator) {
+                this.watchId = navigator.geolocation.watchPosition(
+                    (pos) => {
+                        const newLatLng = new window.kakao.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+                        this.currentLatitude = pos.coords.latitude;
+                        this.currentLongitude = pos.coords.longitude;
+                        if (this.map) {
+                            this.updateMarker();
+                            if (this.polylineDrawing) {
+                                this.addPositionToPath(newLatLng);
+                                this.updatePolyline();
+                            }
+                        }
+                    },
+                    (err) => {
+                        console.error(`위치 정보를 가져오는 데 실패했습니다: ${err.message}`);
+                        this.currentLatitude = 33.450701;
+                        this.currentLongitude = 126.570667;
+                        if (this.map) {
+                            this.updateMarker();
+                        }
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0,
+                    },
+                );
+            } else {
+                alert('브라우저가 지원하지 않습니다.');
+                this.currentLatitude = 33.450701;
+                this.currentLongitude = 126.570667;
+                if (this.map) {
+                    this.updateMarker();
+                }
+            }
         },
+        addPositionToPath(newLatLng) {
+            this.path.push(newLatLng);
+            if (this.path.length > 1) {
+                this.totalDistance += this.calculateDistance(this.path[this.path.length - 2], newLatLng);
+            }
+        },
+        updatePolyline() {
+            if (!this.polyline) {
+                this.initializePolyline();
+            } else {
+                this.polyline.setPath(this.path);
+            }
+            this.$emit('update-distance', this.totalDistance);
+        },
+        initializePolyline() {
+            if (this.map) {
+                this.polyline = new window.kakao.maps.Polyline({
+                    map: this.map,
+                    path: this.path,
+                    strokeWeight: 4,
+                    strokeColor: '#0d6efd',
+                    strokeOpacity: 0.8,
+                    strokeStyle: 'dashed',
+                });
+            }
+        },
+        calculateDistance(latlng1, latlng2) {
+            const R = 6371e3; // 지구의 반경 (미터)
+            const lat1 = latlng1.getLat();
+            const lon1 = latlng1.getLng();
+            const lat2 = latlng2.getLat();
+            const lon2 = latlng2.getLng();
+            const dLat = this.degreesToRadians(lat2 - lat1);
+            const dLon = this.degreesToRadians(lon2 - lon1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(this.degreesToRadians(lat1)) * Math.cos(this.degreesToRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        },
+        degreesToRadians(degrees) {
+            return degrees * (Math.PI / 180);
+        },
+        startPolylineDrawing() {
+            if (this.polylineDrawing) return;
+
+            this.polylineDrawing = true;
+            this.totalDistance = 0;
+            this.path = [];
+            this.elapsedTime = 0;
+            this.startTime = Date.now();
+            if (!this.polyline) {
+                this.initializePolyline();
+            }
+            this.timer = setInterval(() => {
+                this.elapsedTime = Math.floor((Date.now() - this.startTime) / 1000);
+                // 업데이트된 시간을 부모 컴포넌트로 전달
+                this.$emit('update-time', this.elapsedTime);
+            }, 1000);
+        },
+        stopPolylineDrawing() {
+            this.polylineDrawing = false;
+            clearInterval(this.timer);
+            this.timer = null;
+        },
+    },
+    beforeDestroy() {
+        if (this.watchId !== null) {
+            navigator.geolocation.clearWatch(this.watchId);
+        }
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
     },
 };
 </script>
 
 <style scoped>
 #map {
-    width: 300px;
-    height: 400px;
+    width: 400px;
+    height: 500px;
 }
 </style>

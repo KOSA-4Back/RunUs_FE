@@ -8,7 +8,6 @@ import PasswordResetCompo from '@/components/layout/draw-by-kmj/PasswordResetCom
 
 import Test from '@/components/layout/draw-by-kmj/test-test.vue'; //test임 나중에 지우기
 
-import Test from '@/components/layout/draw-by-kmj/test-test.vue';
 import RunningStartCompo from '@/components/page/khw/PageRunningKhw.vue';
 
 
