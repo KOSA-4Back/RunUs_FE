@@ -16,14 +16,21 @@
             <profile-details-compo></profile-details-compo>
             <!-- <body-compo></body-compo>
 <footer-compo></footer-compo> -->
-
         </v-main>
     </v-app>
 </template>
 
 <script>
+import ExampleComponent from './components/page/khw/ExampleComponent.vue';
+import KangHeewon from './components/page/khw/KangHeewon.vue';
+// import BodyCompo from '@/components/combine/BodyCompo.vue';
+// import FooterCompo from '@/components/layout/atoms/FooterCompo.vue';
+
+import YeongHun from '@/components/page/kyh/YeongHun.vue';
+import ProfileDetailsCompo from './components/page/kmj/ProfileDetailsCompo.vue';
+
 export default {
-    components: {},
+    components: { KangHeewon, ExampleComponent, YeongHun, ProfileDetailsCompo },
 
     name: 'App',
 
