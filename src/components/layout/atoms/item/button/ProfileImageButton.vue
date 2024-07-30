@@ -39,21 +39,37 @@ export default {
 </script>
 
 <style scoped>
+.profile-pic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .profile-button {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
     position: relative;
+    width: 150px; /* 고정된 너비 */
+    height: 150px; /* 고정된 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
 .profile-image {
-    width: 200px;
+    width: 100%; /* 버튼 크기에 맞게 조정 */
+    height: 100%; /* 버튼 크기에 맞게 조정 */
     border-radius: 50%;
+    object-fit: cover; /* 이미지의 비율을 유지하면서 버튼 크기에 맞게 조정 */
 }
+
 .edit-icon {
     position: absolute;
     bottom: 0;
-    right: 20%;
+    right: 10%; /* 위치 조정 */
     width: 24px;
     cursor: pointer;
     background-color: white;

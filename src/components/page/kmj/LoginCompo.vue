@@ -1,4 +1,3 @@
-// src/components/layout/draw-by-kmj/LoginCompo.vue
 <template>
     <div class="container">
         <div class="login-box">
@@ -14,6 +13,7 @@
                 <PasswordButton buttonClass="password-button" @click.prevent="goToRegister">회원가입</PasswordButton>
             </div>
         </div>
+        <confirm-alert-compo :showAlert="showAlert" @hideAlert="hideAlert">{{ alertMessage }}</confirm-alert-compo>
     </div>
 </template>
 
@@ -21,16 +21,20 @@
 import axios from '../../api/axios';
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import PasswordButton from '@/components/layout/atoms/item/button/PasswordButton.vue';
+import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
 
 export default {
     components: {
         LoginButton,
         PasswordButton,
+        ConfirmAlertCompo,
     },
     data() {
         return {
             email: '',
             password: '',
+            showAlert: false,
+            alertMessage: '',
         };
     },
     methods: {
@@ -41,12 +45,22 @@ export default {
                     password: this.password,
                 });
                 const token = response.data.Token;
+                const userId = response.data.UserId; // Get UserId from the response
+
                 localStorage.setItem('token', token);
-                alert('로그인 성공!');
-                // 로그인 성공 후 다른 페이지로 이동
-                this.$router.push({ name: 'test' });
+                localStorage.setItem('user_id', userId); // Store UserId in local storage
+
+                setTimeout(() => {
+                    // 로그인 성공 후 다른 페이지로 이동
+                    this.$router.push({ name: 'test' });
+                    //console.log('Logged in User ID:', userId);
+                });
             } catch (error) {
-                alert('로그인 실패! 이메일과 비밀번호를 확인하세요.');
+                this.alertMessage = '이메일과 비밀번호를 확인하세요.';
+                this.showAlert = true;
+                setTimeout(() => {
+                    this.hideAlert();
+                }, 2000);
             }
         },
         goToRegister() {
@@ -54,6 +68,9 @@ export default {
         },
         goToFindPassword() {
             this.$router.push({ name: 'find-password' });
+        },
+        hideAlert() {
+            this.showAlert = false;
         },
     },
 };
