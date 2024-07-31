@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import axios from '../../api/axios'; // 상대 경로로 수정
+import axios from '../../api/axios';
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import ProfileImageButton from '@/components/layout/atoms/item/button/ProfileImageButton.vue';
 import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
@@ -45,6 +45,7 @@ import InputItem from '@/components/layout/atoms/item/input/InputItem.vue';
 import LabelItem from '@/components/layout/atoms/item/label/LabelItem.vue';
 import RoundButtonItem from '@/components/layout/atoms/item/button/RoundButtonItem.vue';
 import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
+import { mapActions } from 'vuex';
 
 export default {
     components: {
@@ -62,15 +63,16 @@ export default {
             nickname: '',
             password: '',
             confirmPassword: '',
-            profileImageUrl: require('@/assets/runus_logo.png'), // 기본 프로필 이미지
+            profileImageUrl: require('@/assets/runus_logo.png'),
             emailChecked: false,
             nicknameChecked: false,
-            profileImageFile: null, // 프로필 이미지 파일
+            profileImageFile: null,
             showAlert: false,
             alertMessage: '',
         };
     },
     methods: {
+        ...mapActions('imageStore', ['setUserData']), // 네임스페이스를 지정하여 액션 맵핑
         async validateAndCheckEmail() {
             if (!this.validateEmail(this.email)) {
                 this.alertMessage = '올바른 이메일 형식이 아닙니다.';
@@ -209,16 +211,14 @@ export default {
                 }, 2000);
                 return;
             }
-            this.$router.push({
-                name: 'profile-details',
-                query: {
-                    email: this.email,
-                    nickname: this.nickname,
-                    password: this.password,
-                    profileImageUrl: this.profileImageUrl,
-                    profileImageFile: this.profileImageFile,
-                },
+            this.setUserData({
+                email: this.email,
+                nickname: this.nickname,
+                password: this.password,
+                profileImageUrl: this.profileImageUrl,
+                profileImageFile: this.profileImageFile,
             });
+            this.$router.push({ name: 'profile-details' });
         },
         hideAlert() {
             this.showAlert = false;

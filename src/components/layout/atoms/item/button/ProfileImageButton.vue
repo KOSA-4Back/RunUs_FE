@@ -29,7 +29,7 @@ export default {
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => {
-                    this.$emit('image-changed', e.target.result);
+                    this.$emit('image-changed', e.target.result, file);
                 };
                 reader.readAsDataURL(file);
             }
