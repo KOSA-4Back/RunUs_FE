@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <v-app>
+        <v-main>
+            <router-view />
+            <!-- <body-compo></body-compo>
+        <footer-compo></footer-compo> -->
+            <example-component></example-component>
+            <br />
+            <hr />
+            <br />
+            <!--<router-view /> 라우터 뷰 잠시 비활성화 -->
+            <yeong-hun />
+            <hr />
+            <br />
+            <profile-details-compo></profile-details-compo>
+            <!-- <body-compo></body-compo>
+<footer-compo></footer-compo> -->
+        </v-main>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import BodyCompo from '@/components/combine/BodyCompo.vue';
+// import FooterCompo from '@/components/layout/atoms/FooterCompo.vue';
+
+import YeongHun from '@/components/page/kyh/YeongHun.vue';
+import ProfileDetailsCompo from './components/page/kmj/ProfileDetailsCompo.vue';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+    components: { YeongHun, ProfileDetailsCompo },
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    name: 'App',
+
+    data: () => ({}),
+};
+</script>
