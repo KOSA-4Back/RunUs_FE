@@ -33,4 +33,8 @@ label {
     margin-bottom: 5px;
     font-size: 16px;
 }
+.header_label {
+    font-weight: bold;
+    font-size: 24;
+}
 </style>

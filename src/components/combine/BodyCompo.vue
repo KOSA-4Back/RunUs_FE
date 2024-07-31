@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ContentCompo from '../layout/atoms/ContentCompo.vue';
 import HeaderCompo from '../layout/atoms/HeaderCompo.vue';
+import ContentCompo from '../layout/atoms/ContentCompo.vue';
 
 export default {
     name: 'bodyCompo',
@@ -22,9 +22,15 @@ export default {
 .body {
     display: flex;
     flex-direction: column;
-    height: 100%;
     width: 100%;
-    background-color: #e2f3ff;
-    box-sizing: border-box;
+    height: 100%;
+}
+
+.header {
+    flex: 0 1 auto; /* Header의 크기는 콘텐츠에 맞춰지고, 필요하면 늘어남 */
+}
+
+.content {
+    flex: 1 1 auto; /* Content는 남은 공간을 채움 */
 }
 </style>
