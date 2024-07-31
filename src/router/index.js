@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import route from './route.js';
+import route from './router';
 import PageNotFound from '../components/page/PageNotFound.vue';
 
 Vue.use(VueRouter);
@@ -15,5 +15,6 @@ const base_router = [
 
 export default new VueRouter({
     mode: 'history',
+    base: '/runus',
     routes: [...route, ...base_router],
 });

@@ -1,36 +1,53 @@
 <template>
     <v-app>
         <v-main>
-            <router-view />
-            <!-- <body-compo></body-compo>
-        <footer-compo></footer-compo> -->
-            <example-component></example-component>
-            <br />
-            <hr />
-            <br />
-            <!--<router-view /> 라우터 뷰 잠시 비활성화 -->
-            <yeong-hun />
-            <hr />
-            <br />
-            <profile-details-compo></profile-details-compo>
-            <!-- <body-compo></body-compo>
-<footer-compo></footer-compo> -->
+            <router-view></router-view>
         </v-main>
     </v-app>
 </template>
 
 <script>
-// import BodyCompo from '@/components/combine/BodyCompo.vue';
-// import FooterCompo from '@/components/layout/atoms/FooterCompo.vue';
-
-import YeongHun from '@/components/page/kyh/YeongHun.vue';
-import ProfileDetailsCompo from './components/page/kmj/ProfileDetailsCompo.vue';
-
 export default {
-    components: { YeongHun, ProfileDetailsCompo },
-
+    components: {},
     name: 'App',
-
     data: () => ({}),
 };
 </script>
+
+<style>
+@import url('@/assets/styles/global.css');
+
+html,
+body,
+#app {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+v-app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+v-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+#app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    height: 800px;
+}
+</style>

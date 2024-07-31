@@ -79,7 +79,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             await this.checkEmail();
@@ -87,6 +87,8 @@ export default {
         async checkEmail() {
             console.log('이메일 중복 확인 클릭');
             try {
+                console.log('이메일:', this.email);
+
                 const response = await axios.get('/auth/check-email', {
                     params: { email: this.email },
                 });
@@ -106,7 +108,7 @@ export default {
             this.showAlert = true;
             setTimeout(() => {
                 this.hideAlert();
-            }, 2000);
+            }, 1300);
         },
         async checkNickname() {
             console.log('닉네임 중복 확인 클릭');
@@ -130,7 +132,7 @@ export default {
             this.showAlert = true;
             setTimeout(() => {
                 this.hideAlert();
-            }, 2000);
+            }, 1300);
         },
         goBack() {
             console.log('뒤로 가기 클릭');
@@ -152,7 +154,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.validateEmail(this.email)) {
@@ -160,7 +162,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.nickname) {
@@ -168,7 +170,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.password) {
@@ -176,7 +178,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.confirmPassword) {
@@ -184,7 +186,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.emailChecked) {
@@ -192,7 +194,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.nicknameChecked) {
@@ -200,7 +202,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (this.password !== this.confirmPassword) {
@@ -208,7 +210,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             this.setUserData({

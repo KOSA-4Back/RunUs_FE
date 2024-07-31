@@ -74,7 +74,7 @@ export default {
             setTimeout(() => {
                 this.showDialog = false;
                 this.$router.push({ name: 'login' });
-            }, 3000);
+            }, 1300);
         },
         async register() {
             if (!this.birth) {
@@ -82,7 +82,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.height) {
@@ -90,7 +90,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             if (!this.weight) {
@@ -98,7 +98,7 @@ export default {
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
                 return;
             }
             try {
@@ -134,14 +134,14 @@ export default {
                     this.showAlert = true;
                     setTimeout(() => {
                         this.hideAlert();
-                    }, 2000);
+                    }, 1300);
                 }
             } catch (error) {
                 this.alertMessage = '에러가 발생했습니다: ' + error.message;
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();
-                }, 2000);
+                }, 1300);
             }
         },
         hideAlert() {

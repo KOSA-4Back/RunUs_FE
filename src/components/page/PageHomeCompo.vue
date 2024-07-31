@@ -1,5 +1,5 @@
 <template>
-    <div id="home">
+    <div class="home">
         <body-compo />
         <footer-compo />
     </div>
@@ -14,13 +14,17 @@ export default {
         BodyCompo,
         FooterCompo,
     },
+    created() {},
+    methods: {},
 };
 </script>
 
 <style scoped>
-#home {
+.home {
     display: flex;
-    height: 800px; /* body 700px + footer 100px */
-    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #e2f3ff !important;
 }
 </style>

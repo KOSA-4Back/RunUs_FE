@@ -6,7 +6,7 @@
                     <div class="date" v-if="viewFlag === 'active'" v-html="formattedActiveTime"></div>
                     <div v-else>
                         <div class="date">{{ date }}</div>
-                        <div class="day">{{ day }}</div>
+                        <div class="weekday">{{ weekday }}</div>
                     </div>
                 </div>
             </v-col>
@@ -28,7 +28,7 @@
 <script>
 export default {
     props: {
-        day: {
+        weekday: {
             type: String,
             default: '월요일',
         },
@@ -38,11 +38,11 @@ export default {
         },
         distance: {
             type: Number,
-            default: 9087,
+            default: 0,
         },
         calories: {
             type: Number,
-            default: 681,
+            default: 0,
         },
         viewFlag: {
             type: String,
@@ -54,7 +54,7 @@ export default {
         },
         goalDistance: {
             type: Number,
-            default: 10,
+            default: 0,
         },
     },
     computed: {
@@ -75,6 +75,7 @@ export default {
     color: #ffffff !important;
     height: 80px;
     width: 288px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .content {
@@ -89,7 +90,7 @@ export default {
     font-size: 18px;
 }
 
-.date-section .day {
+.date-section .weekday {
     font-size: 16px;
     color: #ffc0c0;
 }

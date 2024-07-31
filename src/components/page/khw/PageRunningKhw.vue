@@ -38,6 +38,7 @@
 
 <script>
 import axios from '@/components/api/axios'; // 설정한 Axios 인스턴스 사용
+import { mapActions, mapGetters } from 'vuex';
 import RoundButton from '../../layout/atoms/item/button/RoundButtonItem.vue';
 import KakaoMapItem from '../../layout/atoms/item/map/kakaoMapItem.vue';
 import SetDestinationModalCompo from '@/components/combine/SetDestinationModalCompo.vue';
@@ -70,6 +71,7 @@ export default {
         };
     },
     computed: {
+        ...mapGetters('header', ['currentLayout', 'header']),
         formattedTargetDistance() {
             return (this.goalKm / 1000).toFixed(2) + ' km';
         },
@@ -85,7 +87,11 @@ export default {
             return Math.floor(this.weight * (this.totalDistance / 1000)) + ' kcal'; // 소수점 제거
         },
     },
+    created() {
+        this.updateHeader(); // 헤더 업데이트 메서드 호출
+    },
     methods: {
+        ...mapActions('header', ['updateLayout', 'updateHeaderTitle', 'updateLogo', 'updateChatTitle']),
         showModal() {
             this.isModalVisible = true;
         },
@@ -249,6 +255,11 @@ export default {
             } else {
                 alert('Geolocation을 지원하지 않는 브라우저입니다.');
             }
+        },
+        updateHeader() {
+            // 필요한 헤더 정보만 업데이트
+            // this.updateLayout('running');
+            this.updateLayout('running_start');
         },
     },
     async mounted() {
