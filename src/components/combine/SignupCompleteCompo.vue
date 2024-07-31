@@ -1,19 +1,34 @@
 <template>
-    <v-container fluid class="fill-height d-flex align-center justify-center pa-0">
-        <v-row justify="center" align="center" class="fill-height">
-            <v-col cols="auto">
-                <v-card class="pa-5 d-flex flex-column align-center justify-center text-center" rounded="lg" width="300" height="300" color="#e3f2fd">
-                    <v-icon class="check-icon" size="130">mdi-check-circle</v-icon>
-                    <h2 class="mt-4">회원가입 완료!</h2>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
+    <v-dialog v-model="internalDialog" width="300" persistent>
+        <v-card class="pa-5 d-flex flex-column align-center justify-center text-center" rounded="lg" width="300" height="300" color="#e3f2fd">
+            <v-icon class="check-icon" size="130">mdi-check-circle</v-icon>
+            <h2 class="mt-4">회원가입 완료!</h2>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
 export default {
     name: 'SignupCompleteModal',
+    props: {
+        dialog: {
+            type: Boolean,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            internalDialog: this.dialog,
+        };
+    },
+    watch: {
+        dialog(value) {
+            this.internalDialog = value;
+        },
+        internalDialog(value) {
+            this.$emit('update:dialog', value);
+        },
+    },
 };
 </script>
 
