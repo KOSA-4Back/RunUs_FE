@@ -52,7 +52,7 @@ export default {
 
                 setTimeout(() => {
                     // 로그인 성공 후 다른 페이지로 이동
-                    this.$router.push({ name: 'test' });
+                    this.$router.push('/content/PageRunningKhw');
                     //console.log('Logged in User ID:', userId);
                 });
             } catch (error) {
