@@ -4,7 +4,6 @@
             <router-view />
             <!-- <body-compo></body-compo>
         <footer-compo></footer-compo> -->
-            <kang-heewon></kang-heewon>
             <example-component></example-component>
             <br />
             <hr />
@@ -21,8 +20,6 @@
 </template>
 
 <script>
-import ExampleComponent from './components/page/khw/ExampleComponent.vue';
-import KangHeewon from './components/page/khw/KangHeewon.vue';
 // import BodyCompo from '@/components/combine/BodyCompo.vue';
 // import FooterCompo from '@/components/layout/atoms/FooterCompo.vue';
 
@@ -30,7 +27,7 @@ import YeongHun from '@/components/page/kyh/YeongHun.vue';
 import ProfileDetailsCompo from './components/page/kmj/ProfileDetailsCompo.vue';
 
 export default {
-    components: { KangHeewon, ExampleComponent, YeongHun, ProfileDetailsCompo },
+    components: { YeongHun, ProfileDetailsCompo },
 
     name: 'App',
 
