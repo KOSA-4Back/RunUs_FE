@@ -73,7 +73,7 @@ export default {
             this.showDialog = true;
             setTimeout(() => {
                 this.showDialog = false;
-                this.$router.push({ name: 'test' });
+                this.$router.push({ name: 'login' });
             }, 3000);
         },
         async register() {

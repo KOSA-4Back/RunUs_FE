@@ -6,21 +6,14 @@
             <span></span>
         </div>
         <div class="menu" v-if="showMenu">
-            <div class="menu-item">
+            <div class="menu-item" @click="goToPasswordChange">
                 <div class="icon-wrapper">
                     <img src="@/assets/settings_icon.png" alt="Settings" class="icon" />
                 </div>
-                <span>설정</span>
+                <span>비밀번호 변경</span>
             </div>
             <div class="separator"></div>
-            <div class="menu-item">
-                <div class="icon-wrapper">
-                    <img src="@/assets/profile_icon.png" alt="Profile" class="icon" />
-                </div>
-                <span>프로필 수정</span>
-            </div>
-            <div class="separator"></div>
-            <div class="menu-item">
+            <div class="menu-item" @click="logout">
                 <div class="icon-wrapper">
                     <img src="@/assets/logout_icon.png" alt="Logout" class="icon" />
                 </div>
@@ -31,6 +24,8 @@
 </template>
 
 <script>
+import axios from '@/components/api/axios';
+
 export default {
     data() {
         return {
@@ -40,6 +35,35 @@ export default {
     methods: {
         toggleMenu() {
             this.showMenu = !this.showMenu;
+        },
+        goToPasswordChange() {
+            this.$router.push({ name: 'password-change' });
+        },
+        async logout() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    alert('로그인 토큰이 없습니다. 다시 로그인 해주세요.');
+                    return;
+                }
+                console.log('로그아웃 요청 전송, 토큰:', token);
+                await axios.post(
+                    '/auth/logout',
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    },
+                );
+                console.log('로그아웃 성공');
+                localStorage.removeItem('user_id');
+                localStorage.removeItem('token');
+                this.$router.push({ name: 'login' });
+            } catch (error) {
+                console.error('로그아웃 오류:', error);
+                alert('로그아웃 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
         },
     },
 };
