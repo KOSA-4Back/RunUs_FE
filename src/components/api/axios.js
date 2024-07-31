@@ -19,6 +19,7 @@ instance.interceptors.request.use(
     (error) => Promise.reject(error),
 );
 
+/*
 // 응답 인터셉터
 instance.interceptors.response.use(
     (response) => response,
@@ -31,5 +32,6 @@ instance.interceptors.response.use(
         return Promise.reject(error);
     },
 );
+*/
 
 export default instance;
