@@ -4,9 +4,9 @@
             <div class="menu-box">
                 <KebabMenu />
             </div>
-            <InformationUpdateButton @click="onButtonClick">정보 수정</InformationUpdateButton>
-            <InformationUpdateButton @click="onButtonClick">계정 탈퇴</InformationUpdateButton>
-            <InformationUpdateButton @click="onButtonClick">비밀번호 변경</InformationUpdateButton>
+            <InformationUpdateButton @click="onInfoUpdateClick">정보 수정</InformationUpdateButton>
+            <InformationUpdateButton @click="onAccountDeleteClick">계정 탈퇴</InformationUpdateButton>
+            <InformationUpdateButton @click="onPasswordChangeClick">비밀번호 변경</InformationUpdateButton>
         </div>
     </div>
 </template>
@@ -21,8 +21,14 @@ export default {
         KebabMenu,
     },
     methods: {
-        onButtonClick() {
-            alert('버튼이 클릭되었습니다.');
+        onInfoUpdateClick() {
+            alert('정보 수정 버튼이 클릭되었습니다.');
+        },
+        onAccountDeleteClick() {
+            alert('계정 탈퇴 버튼이 클릭되었습니다.');
+        },
+        onPasswordChangeClick() {
+            this.$router.push({ name: 'password-change' }); // 여기를 유지합니다.
         },
     },
 };

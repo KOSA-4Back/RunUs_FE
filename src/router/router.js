@@ -6,6 +6,7 @@ import RegisterCompo from '@/components/page/kmj/RegisterCompo.vue';
 import ProfileDetailsCompo from '@/components/page/kmj/ProfileDetailsCompo.vue';
 import FindPasswordCompo from '@/components/page/kmj/FindPasswordCompo.vue';
 import PasswordResetCompo from '@/components/page/kmj/PasswordResetCompo.vue';
+import PasswordChangeCompo from '@/components/page/kmj/PasswordChangeCompo.vue';
 import Test from '@/components/page/kmj/test-test.vue'; //test임 나중에 지우기
 
 import RunningStartCompo from '@/components/page/khw/PageRunningKhw.vue';
@@ -39,6 +40,11 @@ export default new Router({
             path: '/password-reset',
             name: 'password-reset',
             component: PasswordResetCompo,
+        },
+        {
+            path: '/password-change',
+            name: 'password-change',
+            component: PasswordChangeCompo,
         },
 
         //test임 나중에 지우기
