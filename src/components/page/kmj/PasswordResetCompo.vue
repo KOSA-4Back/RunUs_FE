@@ -67,7 +67,7 @@ export default {
                     this.isVerified = false; // 인증 실패 시 상태 초기화
                 }
             } catch (error) {
-                this.alertMessage = '에러가 발생했습니다: ' + error.response.data;
+                this.alertMessage = '에러: ' + error.response.data;
                 this.isVerified = false; // 인증 실패 시 상태 초기화
             }
             this.showAlert = true;
@@ -109,7 +109,7 @@ export default {
                     }, 2000);
                 }
             } catch (error) {
-                this.alertMessage = '에러가 발생했습니다: ' + error.response.data;
+                this.alertMessage = '에러: ' + error.response.data;
                 this.showAlert = true;
                 setTimeout(() => {
                     this.hideAlert();

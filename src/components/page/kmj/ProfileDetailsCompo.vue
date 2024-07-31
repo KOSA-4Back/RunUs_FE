@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from '../../api/axios'; // 상대 경로로 수정
+import axios from '../../api/axios';
 import LoginButton from '@/components/layout/atoms/item/button/LoginButton.vue';
 import BackButton from '@/components/layout/atoms/item/button/BackButton.vue';
 import DatePickerInputItem from '@/components/layout/atoms/item/input/DatePickerInputItem.vue';
@@ -36,6 +36,7 @@ import InputItem2 from '@/components/layout/atoms/item/input/InputItem.vue';
 import LabelItem from '@/components/layout/atoms/item/label/LabelItem.vue';
 import SignupCompleteCompo from '@/components/combine/SignupCompleteCompo.vue';
 import ConfirmAlertCompo from '@/components/combine/ConfirmAlertCompo.vue';
+import { mapState } from 'vuex';
 
 export default {
     components: {
@@ -48,13 +49,17 @@ export default {
         SignupCompleteCompo,
         ConfirmAlertCompo,
     },
+    computed: {
+        ...mapState('imageStore', {
+            email: (state) => state.userData.email,
+            nickname: (state) => state.userData.nickname,
+            password: (state) => state.userData.password,
+            profileImageUrl: (state) => state.userData.profileImageUrl,
+            profileImageFile: (state) => state.userData.profileImageFile,
+        }),
+    },
     data() {
         return {
-            email: this.$route.query.email,
-            nickname: this.$route.query.nickname,
-            password: this.$route.query.password,
-            profileImageUrl: this.$route.query.profileImageUrl,
-            profileImageFile: this.$route.query.profileImageFile, // 추가
             birth: '',
             height: '',
             weight: '',
@@ -69,9 +74,8 @@ export default {
             setTimeout(() => {
                 this.showDialog = false;
                 this.$router.push({ name: 'test' });
-            }, 3000); // 3초 후 모달 닫기
+            }, 3000);
         },
-
         async register() {
             if (!this.birth) {
                 this.alertMessage = '생년월일을 입력해 주세요.';
@@ -97,34 +101,33 @@ export default {
                 }, 2000);
                 return;
             }
-
             try {
                 const formData = new FormData();
                 formData.append(
                     'form',
-                    JSON.stringify({
-                        email: this.email,
-                        nickName: this.nickname,
-                        password: this.password,
-                        birth: this.birth,
-                        height: this.height,
-                        weight: this.weight,
-                    }),
+                    new Blob(
+                        [
+                            JSON.stringify({
+                                email: this.email,
+                                nickName: this.nickname,
+                                password: this.password,
+                                birth: this.birth,
+                                height: this.height,
+                                weight: this.weight,
+                            }),
+                        ],
+                        { type: 'application/json' },
+                    ),
                 );
-                console.log('ddd', formData.get('form'));
-
                 if (this.profileImageFile) {
                     formData.append('file', this.profileImageFile);
                 }
-
                 const response = await axios.post('/auth/register', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-
                 if (response.status === 201) {
-                    // 상태 코드 확인
                     this.openModal();
                 } else {
                     this.alertMessage = '회원가입 실패. 다시 시도해주세요.';
