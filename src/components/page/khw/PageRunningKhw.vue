@@ -21,6 +21,13 @@
         <v-dialog v-model="isModalVisible" persistent max-width="300">
             <SetDestinationModalCompo :goalDistance="goalKm" @skip="onSkip" @set-goal="onSubmit" />
         </v-dialog>
+        <RunningResultModal
+            :isVisible="isResultModalVisible"
+            :distance="totalDistance"
+            :time="formattedTime"
+            :calories="formattedCalories"
+            @update:isVisible="isResultModalVisible = $event"
+        />
         <div v-if="isTracking">
             <p>이동 거리: {{ formattedDistance }} m</p>
             <p>활동 시간: {{ formattedTime }}</p>
@@ -34,18 +41,21 @@ import axios from '@/components/api/axios'; // 설정한 Axios 인스턴스 사�
 import RoundButton from '../../layout/atoms/item/button/RoundButtonItem.vue';
 import KakaoMapItem from '../../layout/atoms/item/map/kakaoMapItem.vue';
 import SetDestinationModalCompo from '@/components/combine/SetDestinationModalCompo.vue';
+import RunningResultModal from '@/components/combine/RunningResultModal.vue';
 
 export default {
     components: {
         KakaoMapItem,
         RoundButton,
         SetDestinationModalCompo,
+        RunningResultModal,
     },
     data() {
         return {
             latitude: 37.5665,
             longitude: 126.978,
             isModalVisible: false,
+            isResultModalVisible: false,
             targetDistance: null,
             polylinePath: [], // 현재 경로를 저장할 배열
             isTracking: false,
@@ -209,7 +219,7 @@ export default {
                 console.log('러닝 종료 및 저장 완료:', response.data);
 
                 this.isTracking = false; // 종료 버튼 클릭 시 추적 종료
-                alert('러닝 종료 및 저장 완료!');
+                this.isResultModalVisible = true; // 결과 모달 표시
                 this.todayGoalId = null; // 러닝 종료 시 todayGoalId 초기화
                 this.totalInfoId = null; // 러닝 종료 시 totalInfoId 초기화
             } catch (error) {
@@ -258,5 +268,8 @@ export default {
 .tracking-info p {
     margin: 0;
     font-size: 16px;
+}
+.red--text {
+    color: red;
 }
 </style>
