@@ -91,7 +91,8 @@ export default {
         },
         async fetchTodayGoal() {
             try {
-                const response = await axios.get('/runnings/select/2');
+                const userId = localStorage.getItem('user_id');
+                const response = await axios.get(`/runnings/select/${userId}`);
                 const { todayGoalId, goalKm, today } = response.data;
                 const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜
 
@@ -151,8 +152,9 @@ export default {
         },
         async startNewGoal(distance) {
             try {
+                const userId = localStorage.getItem('user_id');
                 const response = await axios.post('/runnings/start', {
-                    userId: 2,
+                    userId: userId,
                     goalKm: distance,
                 });
 
@@ -174,9 +176,10 @@ export default {
         },
         async updateGoal(distance) {
             try {
+                const userId = localStorage.getItem('user_id');
                 console.log('totalInfoId:', this.totalInfoId);
                 const response = await axios.put('/runnings/update', {
-                    userId: 2,
+                    userId: userId,
                     todayGoalId: this.todayGoalId,
                     goalKm: distance,
                 });
@@ -197,7 +200,7 @@ export default {
         },
         async endTracking() {
             try {
-                const userId = 2; // 실제 사용자의 ID로 변경 필요
+                const userId = localStorage.getItem('user_id'); // 사용자 ID를 로컬스토리지에서 가져옴
                 const totalDistance = Math.floor(this.totalDistance); // 소수점 제거하고 m로 변환
                 const totalCalories = Math.floor(this.weight * (this.totalDistance / 1000)); // 소수점 제거
                 const endTime = new Date(); // 종료 시간 기록
@@ -257,7 +260,6 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 .tracking-info {
     display: flex;
