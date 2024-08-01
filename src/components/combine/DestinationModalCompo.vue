@@ -1,59 +1,76 @@
 <template>
-    <v-container fluid class="fill-height d-flex align-center justify-center pa-0">
-        <v-row justify="center" align="center" class="fill-height">
-            <v-col cols="auto">
-                <v-card class="rounded-xxxl pa-3" rounded="lg" width="230" height="110px" outlined color="#3897DB">
-                    <v-row no-gutters>
-                        <v-col class="d-flex flex-column align-center justify-center content_align">
-                            <h3 class="white-text">{{ title }}</h3>
-                            <p class="white-text">{{ content }}</p>
-                        </v-col>
-                    </v-row>
-                    <badge class="badge-container"></badge>
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
-</template>
-
-<script>
-import Badge from '@/components/layout/atoms/item/modal/BadgeItem.vue';
-
-export default {
-    components: {
-        Badge,
-    },
+    <v-dialog v-model="localIsVisible" max-width="400px">
+      <v-card>
+        <v-card-title class="headline">훌륭해요!</v-card-title>
+        <v-card-text>
+          <div class="result-item">
+            <span>총 거리</span> <span class="result-value">{{ distance }} km</span>
+          </div>
+          <div class="result-item">
+            <span>총 시간</span> <span class="result-value">{{ time }}</span>
+          </div>
+          <div class="result-item">
+            <span>총 칼로리</span> <span class="result-value">{{ calories }}</span>
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="closeModal">닫기</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </template>
+  
+  <script>
+  export default {
+    name: "DestinationModal",
     props: {
-        title: {
-            type: String,
-            required: true,
-            default: '새 메세지',
-        },
-        content: {
-            type: String,
-            required: true,
-        },
+      isVisible: {
+        type: Boolean,
+        required: true,
+      },
+      distance: {
+        type: Number,
+        required: true,
+      },
+      time: {
+        type: String,
+        required: true,
+      },
+      calories: {
+        type: Number,
+        required: true,
+      },
     },
-};
-</script>
-
-<style scoped>
-.position-relative {
-    position: relative;
-}
-
-.badge-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.white-text {
-    color: white !important;
-}
-
-p {
-    margin-top: 10px;
-    font-size: 18px;
-}
-</style>
+    data() {
+      return {
+        localIsVisible: this.isVisible,
+      };
+    },
+    watch: {
+      isVisible(newVal) {
+        this.localIsVisible = newVal;
+      },
+      localIsVisible(newVal) {
+        this.$emit('update:isVisible', newVal);
+      }
+    },
+    methods: {
+      closeModal() {
+        this.localIsVisible = false;
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .result-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .result-value {
+    font-weight: bold;
+    color: red;
+  }
+  </style>
+  

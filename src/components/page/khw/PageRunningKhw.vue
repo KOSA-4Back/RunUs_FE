@@ -1,10 +1,5 @@
 <template>
     <div>
-        <h2>RunUS</h2>
-        <div v-if="isTracking" class="tracking-info">
-            <p v-if="goalKm > 0">목표 거리: {{ formattedTargetDistance }}</p>
-            <RoundButton :elevation="3" :width="48" :height="35" @click="endTracking">종료</RoundButton>
-        </div>
         <KakaoMapItem
             :latitude="latitude"
             :longitude="longitude"
@@ -37,8 +32,10 @@
 </template>
 
 <script>
-import axios from '@/components/api/axios'; // 설정한 Axios 인스턴스 사용
+import axios from '@/components/api/axios';
 import { mapActions, mapGetters } from 'vuex';
+import { EventBus } from '@/utils/eventBus';  // 여기에 import 추가
+
 import RoundButton from '../../layout/atoms/item/button/RoundButtonItem.vue';
 import KakaoMapItem from '../../layout/atoms/item/map/kakaoMapItem.vue';
 import SetDestinationModalCompo from '@/components/combine/SetDestinationModalCompo.vue';
@@ -53,30 +50,28 @@ export default {
     },
     data() {
         return {
+            userId: '',
             latitude: 37.5665,
             longitude: 126.978,
             isModalVisible: false,
             isResultModalVisible: false,
             targetDistance: null,
-            polylinePath: [], // 현재 경로를 저장할 배열
+            polylinePath: [],
             isTracking: false,
-            totalTime: '', // totalTime을 저장할 변수
-            todayGoalId: null, // 오늘 목표 ID를 저장할 변수 추가
-            totalInfoId: null, // total_info_id를 저장할 변수 추가
-            totalDistance: 0, // 이동 거리를 저장할 변수
-            elapsedTime: 0, // 경과 시간을 저장할 변수
-            weight: 50, // 기본 체중 값
-            startTime: null, // 시작 시간을 저장할 변수
-            goalKm: 0, // 목표 거리를 저장할 변수 추가
+            totalTime: '',
+            todayGoalId: null,
+            totalInfoId: null,
+            totalDistance: 0,
+            elapsedTime: 0,
+            weight: 50,
+            startTime: null,
+            goalKm: 0,
         };
     },
     computed: {
         ...mapGetters('header', ['currentLayout', 'header']),
-        formattedTargetDistance() {
-            return (this.goalKm / 1000).toFixed(2) + ' km';
-        },
         formattedDistance() {
-            return Math.floor(this.totalDistance); // 소수점 제거
+            return Math.floor(this.totalDistance);
         },
         formattedTime() {
             const minutes = Math.floor(this.elapsedTime / 60);
@@ -84,27 +79,36 @@ export default {
             return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         },
         formattedCalories() {
-            return Math.floor(this.weight * (this.totalDistance / 1000)) + ' kcal'; // 소수점 제거
+            return Math.floor(this.weight * (this.totalDistance / 1000)) + ' kcal';
         },
     },
     created() {
-        this.updateHeader(); // 헤더 업데이트 메서드 호출
+        this.updateHeader();
+        this.loadUserId();
+        EventBus.$on('end-tracking', this.endTracking); // Listen for the end-tracking event
+    },
+    beforeDestroy() {
+        EventBus.$off('end-tracking', this.endTracking); // Clean up the event listener
     },
     methods: {
-        ...mapActions('header', ['updateLayout', 'updateHeaderTitle', 'updateLogo', 'updateChatTitle']),
+        ...mapActions('header', ['updateLayout', 'updateHeaderTitle', 'updateLogo', 'updateChatTitle', 'updateGoalKm', 'endTracking']),
+        loadUserId() {
+            this.userId = localStorage.getItem('user_id');
+        },
         showModal() {
             this.isModalVisible = true;
         },
         async fetchTodayGoal() {
             try {
-                const response = await axios.get('/runnings/select/2');
+                const response = await axios.get(`/runnings/select/${this.userId}`);
                 const { todayGoalId, goalKm, today } = response.data;
-                const todayDate = new Date().toISOString().split('T')[0]; // 오늘 날짜
+                const todayDate = new Date().toISOString().split('T')[0];
 
                 if (todayDate === today) {
                     this.todayGoalId = todayGoalId;
                     this.goalKm = goalKm;
-                    this.targetDistance = goalKm * 1000; // km를 m로 변환
+                    this.targetDistance = goalKm * 1000;
+                    this.updateGoalKm(goalKm); // 목표 거리 업데이트
                 } else {
                     this.todayGoalId = null;
                     this.goalKm = 0;
@@ -116,24 +120,25 @@ export default {
         async onSkip() {
             try {
                 await this.fetchTodayGoal();
-
                 if (this.todayGoalId) {
-                    await this.updateGoal(this.goalKm); // goalKm를 그대로 유지한 채 업데이트
+                    await this.updateGoal(this.goalKm);
                     console.log('기존 목표 유지하여 업데이트:', this.goalKm);
                 } else {
-                    await this.startNewGoal(0); // 새로운 목표 시작
+                    await this.startNewGoal(0);
                     console.log('새로운 목표 시작');
                 }
 
                 this.isModalVisible = false;
                 this.isTracking = true;
+                
+                this.updateLayout('running_start');
             } catch (error) {
                 console.error('건너뛰기 실패:', error);
                 alert('건너뛰기 실패. 나중에 다시 시도해 주세요.');
             }
         },
         async onSubmit(distance) {
-            this.targetDistance = parseFloat(distance) * 1000; // km를 m로 변환
+            this.targetDistance = parseFloat(distance) * 1000;
             if (isNaN(this.targetDistance)) {
                 alert('유효한 거리를 입력해주세요.');
                 return;
@@ -141,15 +146,17 @@ export default {
 
             try {
                 await this.fetchTodayGoal();
-
                 if (this.todayGoalId) {
-                    await this.updateGoal(distance); // 설정된 목표를 업데이트
+                    await this.updateGoal(distance);
                 } else {
-                    await this.startNewGoal(distance); // 새로운 목표 시작
+                    await this.startNewGoal(distance);
                 }
 
                 this.isModalVisible = false;
                 this.isTracking = true;
+                this.updateGoalKm(distance * 1000); // 목표 거리 업데이트
+                
+                this.updateLayout('running_start');
             } catch (error) {
                 console.error('목표 처리 실패:', error);
                 alert('목표 처리 실패. 나중에 다시 시도해 주세요.');
@@ -158,21 +165,21 @@ export default {
         async startNewGoal(distance) {
             try {
                 const response = await axios.post('/runnings/start', {
-                    userId: 2,
+                    userId: this.userId,
                     goalKm: distance,
                 });
 
-                const { todayGoalId, RunTotalInfoId } = response.data.data; // 서버로부터 받은 todayGoalId와 totalInfoId 저장
-                this.todayGoalId = todayGoalId; // todayGoalId를 인스턴스 변수에 저장
-                this.totalInfoId = RunTotalInfoId; // totalInfoId를 인스턴스 변수에 저장
+                const { todayGoalId, RunTotalInfoId } = response.data.data;
+                this.todayGoalId = todayGoalId;
+                this.totalInfoId = RunTotalInfoId;
                 console.log('서버로부터 받은 totalInfoId:', RunTotalInfoId);
                 this.goalKm = distance;
 
-                this.polylinePath = []; // 폴리라인 경로를 초기화합니다.
-                this.totalDistance = 0; // 이동 거리 초기화
-                this.elapsedTime = 0; // 경과 시간 초기화
-                this.startTime = new Date(); // 시작 시간 기록
-                this.getCurrentLocation(); // 현재 위치를 받아옵니다.
+                this.polylinePath = [];
+                this.totalDistance = 0;
+                this.elapsedTime = 0;
+                this.startTime = new Date();
+                this.getCurrentLocation();
             } catch (error) {
                 console.error('새 목표 시작 실패:', error);
                 alert('새 목표 시작 실패. 나중에 다시 시도해 주세요.');
@@ -182,20 +189,20 @@ export default {
             try {
                 console.log('totalInfoId:', this.totalInfoId);
                 const response = await axios.put('/runnings/update', {
-                    userId: 2,
+                    userId: this.userId,
                     todayGoalId: this.todayGoalId,
                     goalKm: distance,
                 });
                 const { RunTotalInfoId } = response.data.data;
-                this.totalInfoId = RunTotalInfoId; // totalInfoId를 인스턴스 변수에 저장
+                this.totalInfoId = RunTotalInfoId;
                 console.log('업데이트 후 totalInfoId:', RunTotalInfoId);
 
                 this.goalKm = distance;
-                this.polylinePath = []; // 폴리라인 경로 초기화
-                this.totalDistance = 0; // 이동 거리 초기화
-                this.elapsedTime = 0; // 경과 시간 초기화
-                this.startTime = new Date(); // 시작 시간 기록
-                this.getCurrentLocation(); // 현재 위치를 받아옵니다.
+                this.polylinePath = [];
+                this.totalDistance = 0;
+                this.elapsedTime = 0;
+                this.startTime = new Date();
+                this.getCurrentLocation();
             } catch (error) {
                 console.error('목표 업데이트 실패:', error);
                 alert('목표 업데이트 실패. 나중에 다시 시도해 주세요.');
@@ -203,31 +210,30 @@ export default {
         },
         async endTracking() {
             try {
-                const userId = 2; // 실제 사용자의 ID로 변경 필요
-                const totalDistance = Math.floor(this.totalDistance); // 소수점 제거하고 m로 변환
-                const totalCalories = Math.floor(this.weight * (this.totalDistance / 1000)); // 소수점 제거
-                const endTime = new Date(); // 종료 시간 기록
+                const totalDistance = Math.floor(this.totalDistance);
+                const totalCalories = Math.floor(this.weight * (this.totalDistance / 1000));
+                const endTime = new Date();
 
-                // formattedTime을 명시적으로 호출하여 totalTime에 할당
                 this.totalTime = this.formattedTime;
                 console.log('종료 시 totalInfoId:', this.totalInfoId);
                 const response = await axios.post('/runnings/end', {
                     todayGoalId: this.todayGoalId,
-                    userId: userId,
-                    totalDistance: totalDistance, // long으로 전송
-                    totalCalories: totalCalories, // long으로 전송
+                    userId: this.userId,
+                    totalDistance: totalDistance,
+                    totalCalories: totalCalories,
                     startTime: this.startTime,
                     endTime: endTime,
-                    totalTime: this.totalTime, // formattedTime을 그대로 전송
+                    totalTime: this.totalTime,
                     totalInfoId: this.totalInfoId,
                 });
 
                 console.log('러닝 종료 및 저장 완료:', response.data);
 
-                this.isTracking = false; // 종료 버튼 클릭 시 추적 종료
-                this.isResultModalVisible = true; // 결과 모달 표시
-                this.todayGoalId = null; // 러닝 종료 시 todayGoalId 초기화
-                this.totalInfoId = null; // 러닝 종료 시 totalInfoId 초기화
+                this.isTracking = false;
+                this.isResultModalVisible = true;
+                this.todayGoalId = null;
+                this.totalInfoId = null;
+                this.updateLayout('running');
             } catch (error) {
                 console.error('러닝 종료 실패:', error);
                 alert('러닝 종료 실패. 나중에 다시 시도해 주세요.');
@@ -238,7 +244,7 @@ export default {
         },
         updateTime(time) {
             this.elapsedTime = time;
-            this.totalTime = this.formattedTime; // updateTime이 호출될 때마다 totalTime 업데이트
+            this.totalTime = this.formattedTime;
         },
         getCurrentLocation() {
             if (navigator.geolocation) {
@@ -257,14 +263,12 @@ export default {
             }
         },
         updateHeader() {
-            // 필요한 헤더 정보만 업데이트
-            // this.updateLayout('running');
-            this.updateLayout('running_start');
+            this.updateLayout('running');
         },
     },
     async mounted() {
-        await this.getCurrentLocation(); // 컴포넌트가 마운트될 때 현재 위치를 받아옵니다.
-        await this.fetchTodayGoal(); // 컴포넌트가 마운트될 때 오늘 목표를 가져옵니다.
+        await this.getCurrentLocation();
+        await this.fetchTodayGoal();
     },
 };
 </script>
