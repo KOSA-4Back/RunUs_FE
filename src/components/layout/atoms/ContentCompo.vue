@@ -17,6 +17,6 @@ export default {
     background-color: #e2f3ff;
     padding: 10px;
     box-sizing: border-box;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 </style>

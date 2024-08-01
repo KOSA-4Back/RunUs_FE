@@ -1,7 +1,11 @@
 <template>
-    <div id="map"></div>
-</template>
-
+    <div class="contain">
+       <div class="map-container">
+           <div id="map"></div>
+       </div>
+   </div>
+   </template>
+   
 <script>
 export default {
     name: 'KakaoMapItem',
@@ -241,8 +245,27 @@ export default {
 </script>
 
 <style scoped>
+.contain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.map-container {
+    width: 390px;
+    height: 518px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px; /* Optional: adds rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+}
+
 #map {
-    width: 400px;
-    height: 500px;
+    width: 370px;
+    height: 510px;
 }
 </style>
+
