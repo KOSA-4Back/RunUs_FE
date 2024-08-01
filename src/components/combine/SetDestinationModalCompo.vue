@@ -34,7 +34,7 @@ export default {
     },
     data() {
         return {
-            inputDistance: this.goalDistance !== null ? this.goalDistance : '',
+            inputDistance: this.goalDistance !== null ? String(this.goalDistance) : '', // goalDistance를 String으로 변환
         };
     },
     methods: {
@@ -46,7 +46,7 @@ export default {
                 alert('목표 거리를 입력해주세요.');
                 return;
             }
-            this.$emit('set-goal', this.inputDistance);
+            this.$emit('set-goal', parseFloat(this.inputDistance)); // 입력값을 숫자로 변환하여 이벤트 전송
         },
     },
 };

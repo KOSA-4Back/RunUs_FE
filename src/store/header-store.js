@@ -7,6 +7,7 @@ const store = {
                 title: '',
                 logo: '',
                 chatTitle: '',
+                goalKm: 0,
             },
         };
     },
@@ -20,6 +21,9 @@ const store = {
         setLogo(state, logo) {
             state.header.logo = logo;
         },
+        setGoalKm(state, goalKm) {
+            state.header.goalKm = goalKm;
+        },
         setChatTitle(state, chatTitle) {
             state.header.chatTitle = chatTitle;
         },
@@ -28,8 +32,11 @@ const store = {
         updateLayout({ commit }, layout) {
             commit('setLayout', layout);
         },
-        updateHeaderTitle({ commit }, headerTitle) {
-            commit('setHeaderTitle', headerTitle);
+        updateHeaderTitle({ commit }, title) {
+            commit('setHeaderTitle', title);
+        },
+        updateGoalKm({ commit }, goalKm) {
+            commit('setGoalKm', goalKm);
         },
         updateLogo({ commit }, logo) {
             commit('setLogo', logo);
@@ -44,6 +51,9 @@ const store = {
         },
         header(state) {
             return state.header;
+        },
+        goalKm(state) {
+            return state.header.goalKm;
         },
     },
 };
