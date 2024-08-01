@@ -16,13 +16,14 @@
             </div>
             <div class="activity-container">
                 <div class="activity">
-                    <card-item-small :value="user_info.todayTotalDistanceCalDto?.distance" unit="km"></card-item-small>
-                    <card-item-small2 :value="user_info.todayTotalDistanceCalDto?.calories" unit="cal"></card-item-small2>
+                    <card-item-small class="card-item-small" :value="user_info.todayTotalDistanceCalDto?.distance" unit="km"></card-item-small>
+                    <card-item-small2 class="card-item-small2" :value="user_info.todayTotalDistanceCalDto?.calories" unit="cal"></card-item-small2>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 
 <script>
 import CardItem from '@/components/layout/atoms/item/card/CardItem.vue';
@@ -70,13 +71,13 @@ export default {
 }
 
 .profile-pic img {
-    width: 100px;
-    height: 100px;
+    width: 105px;
+    height: 105px;
     border-radius: 50%;
 }
 
 .user-details {
-    margin: 30px 10px;
+    margin: 30px 5px;
 }
 .user-details h2 {
     text-align: left;
@@ -97,14 +98,19 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    width: 100%;
+    width: 80%;
 }
 
 .activity {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    gap: 10px;
+    gap: 50px;
     margin: 10px;
+}
+
+.card-item-small, .card-item-small2 {
+    flex: 1; /* 가로 길이를 동일하게 설정 */
+    min-width: 120px; /* 최소 가로 길이 설정 */
 }
 </style>
