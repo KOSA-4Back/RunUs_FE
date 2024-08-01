@@ -1,6 +1,6 @@
 <template>
     <div>
-        <KakaoMapItem
+        <KakaoMapItem class="kakaoMap"
             :latitude="latitude"
             :longitude="longitude"
             :targetDistance="targetDistance"
@@ -9,27 +9,37 @@
             @update-distance="updateDistance"
             @update-time="updateTime"
         />
-        <br />
-        <div v-if="!isTracking">
-            <RoundButton :elevation="3" :width="150" :height="60" @click="showModal">시작</RoundButton>
+        <div v-if="!isTracking" class="button-container">
+            <RoundButton class="start-btn" :elevation="3" :width="250" :height="65" @click="showModal">시작</RoundButton>
         </div>
         <v-dialog v-model="isModalVisible" persistent max-width="300">
-            <SetDestinationModalCompo :goalDistance="goalKm" @skip="onSkip" @set-goal="onSubmit" />
+            <SetDestinationModalCompo :goalDistance="goalKm" @close="closeModal" @skip="onSkip" @set-goal="onSubmit" />
         </v-dialog>
         <RunningResultModal
             :isVisible="isResultModalVisible"
             :distance="totalDistance"
             :time="formattedTime"
+            @close="isResultModalVisible = false"
             :calories="formattedCalories"
             @update:isVisible="isResultModalVisible = $event"
         />
-        <div v-if="isTracking">
-            <p>이동 거리: {{ formattedDistance }} m</p>
-            <p>활동 시간: {{ formattedTime }}</p>
-            <p>소모 칼로리: {{ formattedCalories }}</p>
+        <div v-if="isTracking" class="tracking-info-container">
+            <div class="tracking-info-item">
+                <span class="label">거리</span>
+                <span class="value blue-text">{{ formattedDistance }} km</span>
+            </div>
+            <div class="tracking-info-item">
+                <span class="label">활동 시간</span>
+                <span class="value blue-text">{{ formattedTime }}</span>
+            </div>
+            <div class="tracking-info-item">
+                <span class="label">칼로리</span>
+                <span class="value red-text">{{ formattedCalories }}</span>
+            </div>
         </div>
     </div>
 </template>
+
 
 <script>
 import axios from '@/components/api/axios';
@@ -71,13 +81,14 @@ export default {
     computed: {
         ...mapGetters('header', ['currentLayout', 'header']),
         formattedDistance() {
-            return Math.floor(this.totalDistance);
+            return (this.totalDistance / 1000).toFixed(1);
         },
         formattedTime() {
-            const minutes = Math.floor(this.elapsedTime / 60);
-            const seconds = this.elapsedTime % 60;
-            return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        },
+    const minutes = Math.floor(this.elapsedTime / 60);
+    const seconds = this.elapsedTime % 60;
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+},
+
         formattedCalories() {
             return Math.floor(this.weight * (this.totalDistance / 1000)) + ' kcal';
         },
@@ -97,6 +108,9 @@ export default {
         },
         showModal() {
             this.isModalVisible = true;
+        },
+        closeModal() {
+            this.isModalVisible = false;
         },
         async fetchTodayGoal() {
             try {
@@ -274,17 +288,69 @@ export default {
 </script>
 
 <style scoped>
-.tracking-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px;
+.kakaoMap {
+    margin-bottom: 4px;
 }
+
+.start-btn {
+    margin-top: 8px; /* 줄어든 위쪽 간격 */
+    margin-bottom: 8px; /* 줄어든 아래쪽 간격 */
+    font-size: 20px; /* 줄어든 폰트 크기 */
+    font-weight: bold; /* 폰트를 굵게 */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 16px; /* 줄어든 버튼과 다음 요소 사이 간격 */
+}
+
+.tracking-info-container {
+    border-radius: 8px; /* 모서리를 둥글게 */
+    padding: 8px; /* 줄어든 패딩 */
+    text-align: center;
+    margin: 8px auto; /* 위 간격 추가 및 중앙 정렬 */
+    width: 60%; /* 너비를 현재의 절반으로 설정 */
+    margin-bottom: 3px;
+}
+
+.tracking-info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0; /* 줄어든 패딩 */
+    border-bottom: 1px solid white; /* 하얀색 선 추가 */
+}
+
+.tracking-info-item:last-child {
+    border-bottom: none; /* 마지막 항목에는 선을 제거 */
+}
+
+.label {
+    font-size: 15px; /* 폰트 크기 조정 */
+    font-weight: bold;
+    color: black; /* 글자색 검정 */
+}
+
+.value {
+    font-size: 15px; /* 폰트 크기 조정 */
+    font-weight: bold;
+}
+
+.blue-text {
+    color: #2196f3;
+}
+
+.red-text {
+    color: #FFC0C0;
+}
+
 .tracking-info p {
     margin: 0;
-    font-size: 16px;
+    font-size: 15px; /* 폰트 크기 조정 */
 }
+
 .red--text {
-    color: red;
+    color: FEA9A9;
 }
 </style>

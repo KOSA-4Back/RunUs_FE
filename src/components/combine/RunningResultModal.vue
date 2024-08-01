@@ -1,17 +1,22 @@
 <template>
-    <v-dialog v-model="localVisible" max-width="400">
-        <v-card>
-            <v-card-title class="headline">훌륭해요!</v-card-title>
-            <v-card-text>
-                <p>
-                    <strong>총 거리:</strong> <span class="red--text">{{ formattedDistance }} km</span>
-                </p>
-                <p>
-                    <strong>총 시간:</strong> <span class="red--text">{{ formattedTime }}</span>
-                </p>
-                <p>
-                    <strong>총 칼로리:</strong> <span class="red--text">{{ formattedCalories }}</span>
-                </p>
+    <v-dialog v-model="localVisible" max-width="300">
+        <v-card class="result-card">
+            <v-card-title class="headline">
+                <v-spacer></v-spacer>
+                <v-icon @click="close" class="close-icon">mdi-close</v-icon>
+            </v-card-title>
+            <v-card-text class="result-content">
+                <div class="result-item">
+                    <strong>총 거리:</strong> <span class="result-value">{{ formattedDistance }} km</span>
+                </div>
+                <div class="divider"></div>
+                <div class="result-item">
+                    <strong>총 시간:</strong> <span class="result-value">{{ formattedTime }}</span>
+                </div>
+                <div class="divider"></div>
+                <div class="result-item">
+                    <strong>총 칼로리:</strong> <span class="result-value">{{ formattedCalories }}</span>
+                </div>
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -74,7 +79,36 @@ export default {
 </script>
 
 <style scoped>
-.red--text {
+.result-card {
+    background-color: rgba(255, 255, 255, 0.9); /* 불투명 배경 */
+    border-radius: 15px; /* 모서리 둥글게 */
+}
+
+.result-content {
+    text-align: center;
+    font-size: 18px;
+}
+
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.result-value {
+    font-size: 18px;
+    font-weight: bold;
     color: red;
+}
+
+.divider {
+    border-bottom: 1px solid #ddd;
+    margin: 10px 0;
+}
+
+.close-icon {
+    cursor: pointer;
 }
 </style>

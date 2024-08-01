@@ -1,17 +1,19 @@
 <template>
     <v-card class="pa-5 d-flex flex-column align-center justify-center text-center" rounded="xl" width="300" height="238" color="#e3f2fd">
-        <Title text="목표 거리 설정" />
+        <div class="title-container">
+            <Title text="목표 거리 설정" />
+            <v-icon @click="close" class="close-icon">mdi-close</v-icon>
+        </div>
         <v-row no-gutters class="d-flex justify-center align-center">
             <Input v-model="inputDistance" label="" />
             <span class="black--text"><h3>km</h3></span>
         </v-row>
-
         <v-row no-gutters class="d-flex justify-center align-center mt-4">
             <v-col cols="auto">
-                <v-btn color="blue darken-1" text @click="skip">건너뛰기</v-btn>
+                <v-btn class="modal-text" color="blue darken-1" text @click="skip">건너뛰기</v-btn>
             </v-col>
             <v-col cols="auto">
-                <v-btn color="blue darken-1" text @click="setGoal">설정</v-btn>
+                <v-btn class="modal-text" color="blue darken-1" text @click="setGoal">설정</v-btn>
             </v-col>
         </v-row>
     </v-card>
@@ -48,6 +50,9 @@ export default {
             }
             this.$emit('set-goal', parseFloat(this.inputDistance)); // 입력값을 숫자로 변환하여 이벤트 전송
         },
+        close() {
+            this.$emit('close'); // 부모 컴포넌트로 close 이벤트 전송
+        },
     },
 };
 </script>
@@ -83,5 +88,25 @@ export default {
 
 .black--text {
     color: black !important;
+}
+
+.modal-text {
+    font-size: 14px; /* 폰트 크기를 크게 */
+    font-weight: bold; /* 폰트를 굵게 */
+}
+
+.title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.close-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
 }
 </style>

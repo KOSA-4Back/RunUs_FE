@@ -90,14 +90,14 @@ export default {
 <style scoped>
 .header {
     width: 100%;
-    height: 70px;
+    height: 90px;
     background-color: #e2f3ff;
     margin-top: 10px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     padding: 0 16px;
-    border: 1px solid #000;
+    /* border: 1px solid #000; */
 }
 
 /* Default layout styles */
@@ -141,9 +141,11 @@ export default {
 }
 
 .logo {
+    margin-top:13px;
     width: 80%;
-    height: 80%;
+    height: 45px;
     object-fit: cover;
+    margin-right: 7px;
 }
 
 /* Running start layout styles */
@@ -156,7 +158,8 @@ export default {
 }
 
 .distance-info {
-    font-size: 16px;
+    margin-left: 5px;
+    font-size: 18px;
     font-weight: bold;
     color: #5d5c5c;
     display: flex;
