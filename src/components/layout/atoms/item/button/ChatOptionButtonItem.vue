@@ -1,13 +1,39 @@
 <template>
     <div class="chat-buttons">
-        <v-btn class="chat-button left" color="white" text-color="#1E1E1E"> 나의 채팅 </v-btn>
+        <v-btn
+            class="chat-button left"
+            :color="selectedChatType === 'myChat' ? 'primary' : 'white'"
+            :text-color="selectedChatType === 'myChat' ? 'white' : '#1E1E1E'"
+            @click="selectChatType('myChat')"
+        >
+            나의 채팅
+        </v-btn>
         <div class="divider"></div>
-        <v-btn class="chat-button right" color="white" text-color="#1E1E1E"> 오픈 채팅 </v-btn>
+        <v-btn
+            class="chat-button right"
+            :color="selectedChatType === 'openChat' ? 'primary' : 'white'"
+            :text-color="selectedChatType === 'openChat' ? 'white' : '#1E1E1E'"
+            @click="selectChatType('openChat')"
+        >
+            오픈 채팅
+        </v-btn>
     </div>
 </template>
 
 <script>
-export default {};
+export default {
+    props: {
+        selectedChatType: {
+            type: String,
+            required: true,
+        },
+    },
+    methods: {
+        selectChatType(type) {
+            this.$emit('chat-type-selected', type);
+        },
+    },
+};
 </script>
 
 <style scoped>
@@ -30,7 +56,6 @@ export default {};
     border-radius: 0; /* 버튼 자체의 둥근 모서리 제거 */
     font-size: 12px; /* 폰트 크기 설정 */
     box-shadow: none; /* 그림자 제거 */
-    color: #1e1e1e; /* 버튼 글자색 #1E1E1E로 설정 */
 }
 
 .chat-button.left {

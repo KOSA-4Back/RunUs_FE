@@ -32,7 +32,7 @@ export default {
     data() {
         return {
             email: '',
-            //////////////////////showAlert: false,
+            showAlert: false,
         };
     },
     methods: {
