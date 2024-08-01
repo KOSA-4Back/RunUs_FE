@@ -67,7 +67,6 @@ export default {
             return {
                 'default-layout': this.layout === 'default',
                 'profile-info-layout': this.layout === 'profile_info',
-                'running-logo': this.layout === 'running',
                 'running-start': this.layout === 'running_start',
                 'chat-list': this.layout === 'chat_list',
                 'chat-room': this.layout === 'chat_room',
@@ -122,6 +121,7 @@ export default {
 
 .default-layout h2 {
     margin: 0 auto;
+}
 
 /* Profile info layout styles */
 .profile-info-layout {

@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const instance = axios.create({
+    // baseURL: 'https://9e87-58-127-11-149.ngrok-free.app/api',
     baseURL: 'http://localhost:8080/api',
     headers: {
         'Content-Type': 'application/json',
+        // 'ngrok-skip-browser-warning': '69420',
     },
 });
 
