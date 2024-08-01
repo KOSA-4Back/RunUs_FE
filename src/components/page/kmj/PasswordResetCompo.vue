@@ -67,7 +67,7 @@ export default {
                     this.isVerified = false; // 인증 실패 시 상태 초기화
                 }
             } catch (error) {
-                this.alertMessage = '에러: ' + error.response.data;
+                this.alertMessage = '인증번호를 확인해주세요.';
                 this.isVerified = false; // 인증 실패 시 상태 초기화
             }
             this.showAlert = true;
