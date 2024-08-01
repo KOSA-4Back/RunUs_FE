@@ -2,7 +2,6 @@
     <div class="activity-list">
         <div class="active-header">
             <h2>활동</h2>
-            <!-- @click="validateAndCheckEmail" -->
             <round-button-item class="check-button" :width="68" :height="30">더보기</round-button-item>
         </div>
         <div class="activities">
@@ -21,6 +20,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
 import CardItem from '@/components/layout/atoms/item/card/CardItem.vue';
@@ -51,17 +51,16 @@ export default {
     },
 };
 </script>
-
 <style scoped>
 .activity-list {
     margin-top: 10px;
     width: 100%;
-    height: 277px;
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/src/assets/sketch-girl-running.png'); /* 이미지 경로를 실제 경로로 변경하세요 */
-    background-size: cover;
+    height: 290px;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/src/assets/runnnn.png'); /* 이미지 경로를 실제 경로로 변경하세요 */
+    background-size: 127%;
     background-position: center;
-    border-top-left-radius: 50px;
-    border-top-right-radius: 50px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
     overflow: hidden;
     position: relative;
     box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
@@ -78,7 +77,8 @@ export default {
 
 .active-header h2 {
     color: rgb(0, 0, 0);
-    font-size: 24px;
+    font-size: 25px; /* 폰트 크기 1px 증가 */
+    font-weight: bold; /* 볼드체로 변경 */
 }
 
 .active-header .check-button {
@@ -86,7 +86,9 @@ export default {
     border: 1px solid #ffcbcb;
     position: absolute;
     right: 20px;
-    font-size: 11px;
+    font-size: 12px; /* 폰트 크기 1px 증가 */
+    font-weight: bold; /* 볼드체로 변경 */
+    display: none;
 }
 
 .activities {
