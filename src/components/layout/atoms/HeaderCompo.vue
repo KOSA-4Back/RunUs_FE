@@ -30,10 +30,10 @@
             <round-button-item class="check-button" :width="68" :height="30" @click="handleEndTracking">종료</round-button-item>
         </div>
         <div v-if="layout === 'chat_list'" class="chat-list">
-            <chat-option-button-item></chat-option-button-item>
+          <chat-option-button-item></chat-option-button-item>
         </div>
         <div v-if="layout === 'chat_room'">
-            <label>{{ headerState.chatTitle }}</label>
+          <label>{{ headerState.chatTitle }}</label>
         </div>
     </div>
 </template>
@@ -82,6 +82,17 @@ export default {
             EventBus.$emit('end-tracking');
         },
     },
+    layoutClass() {
+      return {
+        'default-layout': this.layout === 'default',
+        'profile-info-layout': this.layout === 'profile_info',
+        'running-logo': this.layout === 'running',
+        'running-start': this.layout === 'running_start',
+        'chat-list': this.layout === 'chat_list',
+        'chat-room': this.layout === 'chat_room',
+      };
+    },
+  },
 };
 </script>
 
@@ -111,7 +122,6 @@ export default {
 
 .default-layout h2 {
     margin: 0 auto;
-}
 
 /* Profile info layout styles */
 .profile-info-layout {
@@ -139,9 +149,9 @@ export default {
 }
 
 .logo {
-    width: 80%;
-    height: 80%;
-    object-fit: cover;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
 }
 
 /* Running start layout styles */
@@ -170,10 +180,10 @@ export default {
 
 /* Chat list layout styles */
 .chat-list {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 0 16px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 16px;
 }
 
 /* Chat room layout styles */

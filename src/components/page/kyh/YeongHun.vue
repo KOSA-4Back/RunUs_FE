@@ -4,13 +4,14 @@
         <find-password-temp />
         <password-reset-temp />
         <create-chat-room-compo />
-        <message-modal-compo avatar-src="https://www.w3schools.com/w3images/avatar2.png" sender-id="무지" message-content="반가워요" />
-        <destination-modal-compo title="🎉 목표지점 도착 🎉" content="요아정에 도착했습니다!!" />
+        <message-modal-compo avatar-src="https://www.w3schools.com/w3images/avatar2.png" message-content="반가워요" sender-id="무지" />
+        <destination-modal-compo content="요아정에 도착했습니다!!" title="🎉 목표지점 도착 🎉" />
         <signup-complete-modal />
         <logout-confirm-modal message="로그아웃 하시겠습니까?" />
         <logout-confirm-modal message="정말 탈퇴하시겠습니까?" />
         <set-destination-modal-compo />
         <status-modal-compo />
+        <web-socket></web-socket>
     </div>
 </template>
 <script setup>
@@ -24,6 +25,7 @@ import SignupCompleteModal from '@/components/combine/SignupCompleteCompo.vue';
 import LogoutConfirmModal from '@/components/combine/LogoutConfirmCompo.vue';
 import SetDestinationModalCompo from '@/components/combine/SetDestinationModalCompo.vue';
 import StatusModalCompo from '@/components/combine/StatusModalCompo.vue';
+import WebSocket from '@/components/page/kyh/WebSocket.vue';
 </script>
 
 <style scoped></style>
