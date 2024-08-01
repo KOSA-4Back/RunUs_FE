@@ -88,9 +88,16 @@ export default {
             setTimeout(() => {
                 this.hideAlert();
                 if (success) {
-                    this.$router.go(-1);
+                    this.logout();
                 }
             }, 1500); // 1.5초 후에 모달 창을 자동으로 숨김
+        },
+        logout() {
+            // 로그아웃 처리 (로컬 저장소에서 사용자 정보 제거)
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('auth_token');
+            // 로그인 페이지로 리다이렉트
+            this.$router.push({ name: 'login' });
         },
     },
 };
