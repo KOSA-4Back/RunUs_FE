@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <custom-button text="요아정 정석 조합" :imageUrl="require('@/assets/runus_logo.png')" :clickHandler="handleClick" />
+        <custom-button :text="here" :imageUrl="require('@/assets/runus_logo.png')" :clickHandler="handleClick" />
         <ChatOptionButton></ChatOptionButton>
         <ChatCreateItem></ChatCreateItem>
     </v-container>
@@ -17,6 +17,11 @@ export default {
         CustomButton,
         ChatOptionButton,
         ChatCreateItem,
+    },
+    data() {
+        return {
+            here: 'intial Text',
+        };
     },
     methods: {
         handleClick() {

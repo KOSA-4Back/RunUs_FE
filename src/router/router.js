@@ -5,9 +5,10 @@ import FindPasswordCompo from '@/components/page/kmj/FindPasswordCompo.vue';
 import PasswordResetCompo from '@/components/page/kmj/PasswordResetCompo.vue';
 import PasswordChangeCompo from '@/components/page/kmj/PasswordChangeCompo.vue';
 import Test from '@/components/page/kmj/test-test.vue'; //test임 나중에 지우기
-
 import PageHomeCompo from '@/components/page/PageHomeCompo.vue';
 import RunningStartCompo from '@/components/page/khw/PageRunningKhw.vue';
+import ChatRoomListCompo from '@/components/page/kyh/chatRoomListCompo.vue';
+import ChatRoomDetailCompo from '@/components/page/kyh/chatRoomDetailCompo.vue';
 
 const routes = [
     {
@@ -51,6 +52,17 @@ const routes = [
         component: RunningStartCompo,
     },
     {
+        path: '/chat-room-list',
+        name: 'chat-room-list',
+        component: ChatRoomListCompo,
+    },
+    {
+        path: '/chat-room-detail/:id',
+        name: 'chat-room-detail',
+        component: ChatRoomDetailCompo,
+        props: true,
+    },
+    {
         path: '/content',
         name: 'content',
         component: PageHomeCompo,
@@ -64,6 +76,11 @@ const routes = [
                 path: 'profile',
                 name: 'PageProfileKejCompo',
                 component: () => import('@/components/page/kej/PageProfileKejCompo.vue'),
+            },
+            {
+                path: 'demo',
+                name: 'WebSocketDemo',
+                component: () => import('@/components/page/kyh/WebSocketDemo.vue'),
             },
         ],
     },

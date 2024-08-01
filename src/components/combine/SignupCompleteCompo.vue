@@ -1,6 +1,6 @@
 <template>
-    <v-dialog v-model="internalDialog" width="300" persistent>
-        <v-card class="pa-5 d-flex flex-column align-center justify-center text-center" rounded="lg" width="300" height="300" color="#e3f2fd">
+    <v-dialog v-model="internalDialog" persistent width="300">
+        <v-card class="pa-5 d-flex flex-column align-center justify-center text-center" color="#e3f2fd" height="300" rounded="lg" width="300">
             <v-icon class="check-icon" size="130">mdi-check-circle</v-icon>
             <h2 class="mt-4">회원가입 완료!</h2>
         </v-card>
@@ -10,6 +10,7 @@
 <script>
 export default {
     name: 'SignupCompleteModal',
+
     props: {
         dialog: {
             type: Boolean,
