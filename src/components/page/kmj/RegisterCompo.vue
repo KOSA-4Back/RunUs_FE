@@ -32,7 +32,7 @@
                 <LoginButton buttonClass="button" @click.prevent="goToProfileDetails">다음</LoginButton>
             </form>
         </div>
-        <confirm-alert-compo :showAlert="showAlert" @hideAlert="hideAlert">{{ alertMessage }}</confirm-alert-compo>
+        <ConfirmAlertCompo :showAlert="showAlert" @hideAlert="hideAlert">{{ alertMessage }}</ConfirmAlertCompo>
     </div>
 </template>
 
@@ -111,6 +111,14 @@ export default {
             }, 1300);
         },
         async checkNickname() {
+            if (!this.nickname) {
+                this.alertMessage = '닉네임을 입력해 주세요.';
+                this.showAlert = true;
+                setTimeout(() => {
+                    this.hideAlert();
+                }, 1300);
+                return;
+            }
             console.log('닉네임 중복 확인 클릭');
             try {
                 const response = await axios.get('/auth/check-nickname', {
