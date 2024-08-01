@@ -7,7 +7,7 @@
         <div class="activities">
             <ul v-if="activities && activities.length > 0">
                 <li v-for="activity in activities" :key="activity.date">
-                    <card-item :date="currentDate" :weekday="currentWeekday" :distance="activity.distance" :calories="activity.calories"></card-item>
+                    <card-item :date="formatDate(activity.date)" :weekday="formatWeekday(activity.date)" :distance="activity.distance" :calories="activity.calories"></card-item>
                 </li>
             </ul>
             <ul v-else>
@@ -21,7 +21,6 @@
     </div>
 </template>
 
-
 <script>
 import CardItem from '@/components/layout/atoms/item/card/CardItem.vue';
 import RoundButtonItem from '../layout/atoms/item/button/RoundButtonItem.vue';
@@ -32,28 +31,22 @@ export default {
         CardItem,
         RoundButtonItem,
     },
-    computed: {
-        currentDate() {
-            const today = this.activities.date ? this.activities.date : new Date();
-            const date = new Date(today);
+    methods: {
+        formatDate(date) {
+            const parsedDate = new Date(date);
             const options = { month: '2-digit', day: '2-digit' };
-            const formattedDate = date.toLocaleDateString('ko-KR', options).replace(/\./g, '').replace(/\s/g, ' / ');
-
-            return formattedDate;
+            return parsedDate.toLocaleDateString('ko-KR', options).replace(/\./g, '').replace(/\s/g, ' / ');
         },
-        currentWeekday() {
-            const today = this.activities.date ? this.activities.date : new Date();
-            const date = new Date(today);
+        formatWeekday(date) {
+            const parsedDate = new Date(date);
             const options = { weekday: 'long' };
-
-            return date.toLocaleDateString('ko-KR', options);
+            return parsedDate.toLocaleDateString('ko-KR', options);
         },
     },
 };
 </script>
 <style scoped>
 .activity-list {
-    margin-top: 10px;
     width: 100%;
     height: 290px;
     background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/src/assets/runnnn.png'); /* 이미지 경로를 실제 경로로 변경하세요 */
@@ -64,6 +57,7 @@ export default {
     overflow: hidden;
     position: relative;
     box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
 }
 
 .active-header {
@@ -104,11 +98,11 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px; /* card-item 간의 간격 */
+    gap: 3px; /* card-item 간의 간격 */
 }
 
 .activities li {
-    margin: 10px 20px;
+    margin: 3px 3px;
     padding: 10px;
     border-radius: 10px;
 }
@@ -117,8 +111,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #5da9e0b2 !important;
-    color: #ffffff !important;
+    background-color: #5da9e0b2;
+    color: #ffffff;
     height: 80px;
     width: 288px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);

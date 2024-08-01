@@ -3,7 +3,7 @@
         <div class="profile-container">
             <div class="profile-pic">
                 <img v-if="user_info.findMembersResponse?.profileUrl" :src="user_info.findMembersResponse?.profileUrl" alt="Profile Picture" />
-                <img v-else src="@/assets/profile_icon.png" alt="Profile Picture" />
+                <img v-else src="@/assets/runus_logo.png" alt="Profile Picture" />
             </div>
             <div class="user-details">
                 <h2>{{ user_info.findMembersResponse?.nickName }}</h2>
@@ -23,7 +23,6 @@
         </div>
     </div>
 </template>
-
 
 <script>
 import CardItem from '@/components/layout/atoms/item/card/CardItem.vue';
@@ -67,17 +66,17 @@ export default {
 .profile-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 .profile-pic img {
-    width: 105px;
-    height: 105px;
-    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    border-radius: 40%;
 }
 
 .user-details {
-    margin: 30px 5px;
+    margin: 10px 5px;
 }
 .user-details h2 {
     text-align: left;
@@ -106,10 +105,10 @@ export default {
     justify-content: space-around;
     width: 100%;
     gap: 50px;
-    margin: 10px;
 }
 
-.card-item-small, .card-item-small2 {
+.card-item-small,
+.card-item-small2 {
     flex: 1; /* 가로 길이를 동일하게 설정 */
     min-width: 120px; /* 최소 가로 길이 설정 */
 }
