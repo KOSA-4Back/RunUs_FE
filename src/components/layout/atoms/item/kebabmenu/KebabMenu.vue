@@ -89,7 +89,7 @@ export default {
     display: block;
     width: 6px;
     height: 6px;
-    background-color: black;
+    background-color: #1976d2;
     border-radius: 50%;
 }
 
@@ -100,7 +100,7 @@ export default {
     background-color: #e2f3ff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 180px;
+    width: 220px;
     padding: 10px 0;
 }
 
