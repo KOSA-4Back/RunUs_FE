@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import axios from '@/components/api/axios';
+import api from '@/components/api/axios'; // axios 인스턴스의 경로를 확인하세요
 import { mapActions, mapGetters } from 'vuex';
 
 import UserInfoCompo from '@/components/combine/UserInfoCompo';
@@ -43,7 +43,7 @@ export default {
             if (!this.userId) return;
 
             try {
-                const response = await axios.get(`/member/info/today/${this.userId}`);
+                const response = await api.get(`/member/info/today/${this.userId}`);
                 this.userInfo = response.data;
                 console.log('user');
                 console.log(response.data);
@@ -57,7 +57,7 @@ export default {
             if (!this.userId) return;
 
             try {
-                const response = await axios.get(`/member/active/${this.userId}`);
+                const response = await api.get(`/member/active/${this.userId}`);
                 this.activities = response.data;
                 console.log('active');
                 console.log(response.data);

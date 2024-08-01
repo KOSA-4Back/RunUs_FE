@@ -82,6 +82,11 @@ const routes = [
                 name: 'WebSocketDemo',
                 component: () => import('@/components/page/kyh/WebSocketDemo.vue'),
             },
+            {
+                path: 'Activity',
+                name: 'PageActivityKejCompo',
+                component: () => import('@/components/page/kej/PageActivityKejCompo.vue'),
+            },
         ],
     },
 ];
