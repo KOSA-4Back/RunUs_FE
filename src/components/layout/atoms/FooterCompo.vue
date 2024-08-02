@@ -10,7 +10,7 @@
                 <v-divider class="thick-divider" vertical></v-divider>
             </div>
             <v-col class="text-center">
-                <router-link to="/content/chat">
+                <router-link to="/chat-room-list">
                     <img :src="require('@/assets/chat.png')" class="footerpng clickable" />
                 </router-link>
             </v-col>
@@ -34,7 +34,8 @@ export default {
 </script>
 
 <style scoped>
-.runpng, .footerpng {
+.runpng,
+.footerpng {
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     border-radius: 12px; /* 둥근 모서리 */
     padding: 5px; /* 패딩 추가 */
@@ -43,7 +44,7 @@ export default {
 .clickable:active {
     transform: scale(0.9); /* 더 큰 축소 효과 */
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3); /* 더 큰 그림자 효과 */
-    background-color: #FF8686; /* 클릭 시 배경색 변경 */
+    background-color: #ff8686; /* 클릭 시 배경색 변경 */
 }
 
 .runpng {

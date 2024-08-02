@@ -29,16 +29,16 @@ module.exports = defineConfig({
     // devServer: {
     //     allowedHosts: 'all',
     //     client: {
-    //         webSocketURL: 'wss://0de4-58-127-11-149.ngrok-free.app/ws', // 프론트엔드 ngrok 주소
+    //         webSocketURL: 'wss://4c96-115-93-148-232.ngrok-free.app/ws', // 프론트엔드 ngrok 주소
     //     },
     //     proxy: {
     //         '/api': {
-    //             target: 'https://9e87-58-127-11-149.ngrok-free.app', // 백엔드 ngrok 주소
+    //             target: 'https://f314-115-93-148-232.ngrok-free.app', // 백엔드 ngrok 주소
     //             changeOrigin: true,
     //             secure: false,
     //         },
     //         '/chat': {
-    //             target: 'https://de3f-58-127-11-149.ngrok-free.app', // 채팅 서버 ngrok 주소
+    //             target: 'https://b3e9-115-93-148-232.ngrok-free.app', // 채팅 서버 ngrok 주소
     //             changeOrigin: true,
     //             secure: false,
     //             ws: true, // WebSocket 프록시 활성화

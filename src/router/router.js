@@ -4,7 +4,6 @@ import ProfileDetailsCompo from '@/components/page/kmj/ProfileDetailsCompo.vue';
 import FindPasswordCompo from '@/components/page/kmj/FindPasswordCompo.vue';
 import PasswordResetCompo from '@/components/page/kmj/PasswordResetCompo.vue';
 import PasswordChangeCompo from '@/components/page/kmj/PasswordChangeCompo.vue';
-import Test from '@/components/page/kmj/test-test.vue'; //test임 나중에 지우기
 import PageHomeCompo from '@/components/page/PageHomeCompo.vue';
 import RunningStartCompo from '@/components/page/khw/PageRunningKhw.vue';
 import ChatRoomListCompo from '@/components/page/kyh/chatRoomListCompo.vue';
@@ -42,11 +41,6 @@ const routes = [
         component: PasswordChangeCompo,
     },
     {
-        path: '/test',
-        name: 'test',
-        component: Test,
-    },
-    {
         path: '/running-start',
         name: 'running-start',
         component: RunningStartCompo,
@@ -77,16 +71,21 @@ const routes = [
                 name: 'PageProfileKejCompo',
                 component: () => import('@/components/page/kej/PageProfileKejCompo.vue'),
             },
-            {
-                path: 'demo',
-                name: 'WebSocketDemo',
-                component: () => import('@/components/page/kyh/WebSocketDemo.vue'),
-            },
-            {
-                path: 'Activity',
-                name: 'PageActivityKejCompo',
-                component: () => import('@/components/page/kej/PageActivityKejCompo.vue'),
-            },
+            // {
+            //     path: 'chatRoomList',
+            //     name: 'chatRoomList',
+            //     component: () => import('@/components/page/kyh/chatRoomListCompo.vue'),
+            // },
+            // {
+            //     path: '/chat-room-detail/:id',
+            //     name: 'chat-room-detail',
+            //     component: () => import('@/components/page/kyh/chatRoomDetailCompo.vue'),
+            // },
+            // {
+            //     path: 'Activity',
+            //     name: 'PageActivityKejCompo',
+            //     component: () => import('@/components/page/kej/PageActivityKejCompo.vue'),
+            // },
         ],
     },
 ];

@@ -16,7 +16,11 @@
             </div>
             <div class="activity-container">
                 <div class="activity">
-                    <card-item-small class="card-item-small" :value="user_info.todayTotalDistanceCalDto?.distance" unit="km"></card-item-small>
+                    <card-item-small
+                        class="card-item-small"
+                        :value="user_info.todayTotalDistanceCalDto?.distance ? user_info.todayTotalDistanceCalDto?.distance / 1000 : 0"
+                        unit="km"
+                    ></card-item-small>
                     <card-item-small2 class="card-item-small2" :value="user_info.todayTotalDistanceCalDto?.calories" unit="cal"></card-item-small2>
                 </div>
             </div>
